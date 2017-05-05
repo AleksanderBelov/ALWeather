@@ -6,23 +6,16 @@ import com.google.gson.annotations.SerializedName;
 
 public class Sys {
 
-    @SerializedName("type")
+    @SerializedName("pod")
     @Expose
-    public Integer type;
-    @SerializedName("id")
-    @Expose
-    public Integer id;
-    @SerializedName("message")
-    @Expose
-    public Double message;
-    @SerializedName("country")
-    @Expose
-    public String country;
-    @SerializedName("sunrise")
-    @Expose
-    public Integer sunrise;
-    @SerializedName("sunset")
-    @Expose
-    public Integer sunset;
+    private String pod;
+
+    public String getPod() {
+        return pod;
+    }
+
+    public void setPod(String pod) {
+        this.pod = pod;
+    }
 
 }

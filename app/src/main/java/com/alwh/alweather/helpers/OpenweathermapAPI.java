@@ -16,8 +16,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public interface OpenweathermapAPI {
-
-    @GET("addr/{addr}/")
-    Call<JSONCurrentWeatherData> getCurrentWeather(@Path("name") String userName, @Query("access_token") String access_token);
+    @GET("forecast")
+    Call<JSONCurrentWeatherData> getCurrentWeather(@Query("q") String locate, @Query("mode") String mode,@Query("units") String units,@Query("APPID") String APIKey);
+//    Call<JSONCurrentWeatherData> getCurrentWeather();
 
 }

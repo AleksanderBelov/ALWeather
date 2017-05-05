@@ -1,47 +1,68 @@
 
 package com.alwh.alweather.json;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.orm.SugarRecord;
 
-public class JSONCurrentWeatherData {
+public class JSONCurrentWeatherData extends SugarRecord {
 
-    @SerializedName("coord")
-    @Expose
-    public Coord coord;
-    @SerializedName("weather")
-    @Expose
-    public List<Weather> weather = null;
-    @SerializedName("base")
-    @Expose
-    public String base;
-    @SerializedName("main")
-    @Expose
-    public Main main;
-    @SerializedName("visibility")
-    @Expose
-    public Integer visibility;
-    @SerializedName("wind")
-    @Expose
-    public Wind wind;
-    @SerializedName("clouds")
-    @Expose
-    public Clouds clouds;
-    @SerializedName("dt")
-    @Expose
-    public Integer dt;
-    @SerializedName("sys")
-    @Expose
-    public Sys sys;
-    @SerializedName("id")
-    @Expose
-    public Integer id;
-    @SerializedName("name")
-    @Expose
-    public String name;
     @SerializedName("cod")
     @Expose
-    public Integer cod;
+    private String cod;
+    @SerializedName("message")
+    @Expose
+    private Double message;
+    @SerializedName("cnt")
+    @Expose
+    private Integer cnt;
+    @SerializedName("list")
+    @Expose
+    private java.util.List<com.alwh.alweather.json.List> list = null;
+    @SerializedName("city")
+    @Expose
+    private City city;
 
+    public String getCod() {
+        return cod;
+    }
+
+    public void setCod(String cod) {
+        this.cod = cod;
+    }
+
+    public Double getMessage() {
+        return message;
+    }
+
+    public void setMessage(Double message) {
+        this.message = message;
+    }
+
+    public Integer getCnt() {
+        return cnt;
+    }
+
+    public void setCnt(Integer cnt) {
+        this.cnt = cnt;
+    }
+
+    public java.util.List<com.alwh.alweather.json.List> getList() {
+        return list;
+    }
+
+    public void setList(java.util.List<com.alwh.alweather.json.List> list) {
+        this.list = list;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+    public JSONCurrentWeatherData() {
+    }
 }
