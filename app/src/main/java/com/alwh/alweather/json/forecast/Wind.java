@@ -1,5 +1,5 @@
 
-package com.alwh.alweather.json;
+package com.alwh.alweather.json.forecast;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

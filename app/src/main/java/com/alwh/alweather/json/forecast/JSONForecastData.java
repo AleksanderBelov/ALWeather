@@ -1,11 +1,10 @@
 
-package com.alwh.alweather.json;
+package com.alwh.alweather.json.forecast;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.orm.SugarRecord;
 
-public class JSONCurrentWeatherData extends SugarRecord {
+public class JSONForecastData {
 
     @SerializedName("cod")
     @Expose
@@ -18,7 +17,7 @@ public class JSONCurrentWeatherData extends SugarRecord {
     private Integer cnt;
     @SerializedName("list")
     @Expose
-    private java.util.List<com.alwh.alweather.json.List> list = null;
+    private java.util.List<com.alwh.alweather.json.forecast.List> list = null;
     @SerializedName("city")
     @Expose
     private City city;
@@ -47,11 +46,11 @@ public class JSONCurrentWeatherData extends SugarRecord {
         this.cnt = cnt;
     }
 
-    public java.util.List<com.alwh.alweather.json.List> getList() {
+    public java.util.List<com.alwh.alweather.json.forecast.List> getList() {
         return list;
     }
 
-    public void setList(java.util.List<com.alwh.alweather.json.List> list) {
+    public void setList(java.util.List<com.alwh.alweather.json.forecast.List> list) {
         this.list = list;
     }
 
@@ -63,6 +62,4 @@ public class JSONCurrentWeatherData extends SugarRecord {
         this.city = city;
     }
 
-    public JSONCurrentWeatherData() {
-    }
 }

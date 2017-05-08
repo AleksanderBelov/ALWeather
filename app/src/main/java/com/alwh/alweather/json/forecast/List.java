@@ -1,5 +1,5 @@
 
-package com.alwh.alweather.json;
+package com.alwh.alweather.json.forecast;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -30,6 +30,9 @@ public class List {
     @SerializedName("dt_txt")
     @Expose
     private String dtTxt;
+    @SerializedName("snow")
+    @Expose
+    private Snow snow;
 
     public Integer getDt() {
         return dt;
@@ -93,6 +96,14 @@ public class List {
 
     public void setDtTxt(String dtTxt) {
         this.dtTxt = dtTxt;
+    }
+
+    public Snow getSnow() {
+        return snow;
+    }
+
+    public void setSnow(Snow snow) {
+        this.snow = snow;
     }
 
 }

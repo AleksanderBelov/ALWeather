@@ -30,11 +30,10 @@ public class AppRoot extends Application {
         SugarContext.init(this);
 
         retrofit = new Retrofit.Builder()
-      //          .baseUrl("http://api.openweathermap.org/data/2.5/forecast?q=London&mode=json&APPID=dda74e030c23ee9017cf9a8f897f19cf") //Базовая часть адреса
-                .baseUrl("http://api.openweathermap.org/data/2.5/") //Базовая часть адреса
-                .addConverterFactory(GsonConverterFactory.create()) //Конвертер, необходимый для преобразования JSON'а в объекты
+                .baseUrl("http://api.openweathermap.org/data/2.5/")
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        openweathermapAPI = retrofit.create(OpenweathermapAPI.class); //Создаем объект, при помощи которого будем выполнять запросы
+        openweathermapAPI = retrofit.create(OpenweathermapAPI.class);
     }
 
     public static OpenweathermapAPI getApi() {
