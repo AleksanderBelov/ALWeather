@@ -1,4 +1,4 @@
-package com.alwh.alweather;
+package com.alwh.alweather.model;
 
 import android.util.Log;
 

@@ -6,60 +6,40 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+
+import android.view.View;
+import android.widget.TextView;
+
 import com.alwh.alweather.R;
-import com.alwh.alweather.Test;
-import com.alwh.alweather.service.AlWeatherService;
+
+import com.alwh.alweather.model.ControlService;
 
 public class MainActivity extends AppCompatActivity {
 
     final String TAG = "AlWeather/MActivity: ";
 
-    boolean bound = false;
-    ServiceConnection sConn;
-    Intent intent;
-    AlWeatherService alWeatherService;
-    long interval;
+
+    TextView city;
+    TextView temperature;
+    ControlService controlService;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        intent = new Intent(this, AlWeatherService.class);
+        city = (TextView) findViewById(R.id.textViewA);
+        temperature = (TextView) findViewById(R.id.textViewB);
 
-        sConn = new ServiceConnection() {
-
-            public void onServiceConnected(ComponentName name, IBinder binder) {
-                Log.d(TAG, "onServiceConnected");
-                alWeatherService = ((AlWeatherService.MyBinder) binder).getService();
-                bound = true;
-            }
-
-            public void onServiceDisconnected(ComponentName name) {
-                Log.d(TAG, "onServiceDsconnected");
-                bound = false;
-            }
-        };
-
-
-
-
-
-
-
-     //   Test test = new Test();
-     //   test.getCurrentWeather();
-
-
-
-
+        controlService = new ControlService(this);
+        controlService.BindAlWeatherService();
     }
-    @Override
-    protected void onStart() {
-        Log.d(TAG, "onStart");
-        super.onStart();
-        bindService(intent, sConn, 0);
-        startService(intent);
+
+    public void onClickgetTemperature(View v) {
+
+        city.setText(controlService.getWeather().getCityName());
+        temperature.setText("" + controlService.getWeather().getTemperature());
     }
 }

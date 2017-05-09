@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+
+import com.alwh.alweather.database.SQLiteWeatherData;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -27,30 +30,41 @@ public class AlWeatherService extends Service {
         super.onCreate();
         Log.d(TAG, "onCreate");
         timer = new Timer();
-        schedule();
-    }
-
-    void schedule() {
-        if (tTask != null) tTask.cancel();
-        if (interval > 0) {
-            tTask = new TimerTask() {
-                public void run() {
-                    Log.d(TAG, "run");
-                    loadDate.getCurrentWeather();
-                }
-            };
-            timer.schedule(tTask, 1000, interval);
-        }
+        LoadWeatherFromSite();
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        //throw new UnsupportedOperationException("Not yet implemented");
         Log.d(TAG, "onBind");
         return binder;
 
 
+    }
+
+    void LoadWeatherFromSite() {
+        new Thread(new Runnable() {
+            public void run() {
+                if (tTask != null) tTask.cancel();
+                if (interval > 0) {
+                    tTask = new TimerTask() {
+                        public void run() {
+                            Log.d(TAG, "run");
+                            loadDate.getWeatherFromSite();
+                        }
+                    };
+                    timer.schedule(tTask, 1000, interval);
+                }
+            }
+        }).start();
+    }
+
+    public SQLiteWeatherData ReadWeatherFromSQLite() {
+        return SQLiteWeatherData.findById(SQLiteWeatherData.class, );
+    }
+
+    public SQLiteWeatherData ReadActyalWeatherFromSQLite() {
+
+        return loadDate.getWeatherFromSite();
     }
 
     public class MyBinder extends Binder {
