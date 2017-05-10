@@ -34,12 +34,25 @@ public class MainActivity extends AppCompatActivity {
         temperature = (TextView) findViewById(R.id.textViewB);
 
         controlService = new ControlService(this);
-        controlService.BindAlWeatherService();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        controlService.bindAlWeatherService();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        controlService.unbindAlWeatherService();
     }
 
     public void onClickgetTemperature(View v) {
+        boolean renew = false;
+        controlService.getForecast(renew);
 
-        city.setText(controlService.getWeather().getCityName());
-        temperature.setText("" + controlService.getWeather().getTemperature());
+        city.setText(controlService.getWeather(renew).getCityName());
+        temperature.setText("" + controlService.getWeather(renew).getTemperature());
     }
 }

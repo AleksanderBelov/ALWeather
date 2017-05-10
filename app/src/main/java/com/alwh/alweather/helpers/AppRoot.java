@@ -12,6 +12,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.alwh.alweather.database.SQLiteAlWeatherConfig;
 import com.alwh.alweather.database.SQLiteWeatherData;
 import com.alwh.alweather.service.AlWeatherService;
 import com.orm.SugarApp;
@@ -49,29 +50,35 @@ public class AppRoot extends Application {
                 .build();
         openweathermapAPI = retrofit.create(OpenweathermapAPI.class);
 
+        checkConfigDB();
+
+
         intent = new Intent(this, AlWeatherService.class);
         startService(intent);
+ }
 
-   /*     sConn = new ServiceConnection() {
-            public void onServiceConnected(ComponentName name, IBinder binder) {
-                Log.d(TAG, "onServiceConnected");
-                alWeatherService = ((AlWeatherService.MyBinder) binder).getService();
-                bound = true;
-            }
-
-            public void onServiceDisconnected(ComponentName name) {
-                Log.d(TAG, "onServiceDsconnected");
-                bound = false;
-            }
-        };
-        bindService(intent, sConn, 0);
- */   }
-
-    public AlWeatherService getService(){
-        return alWeatherService;
-    }
 
     public static OpenweathermapAPI getApi() {
         return openweathermapAPI;
     }
+
+    public void checkConfigDB() {
+
+        SQLiteAlWeatherConfig sqLiteAlWeatherConfig = new SQLiteAlWeatherConfig("Kiev", 10000, 50000);
+        sqLiteAlWeatherConfig.setId((long) 1);
+        sqLiteAlWeatherConfig.save();
+
+//       if ((SQLiteAlWeatherConfig.findById(SQLiteAlWeatherConfig.class, 1)) == null) {
+//           SQLiteAlWeatherConfig sqLiteAlWeatherConfig = new SQLiteAlWeatherConfig("Kiev", 0, 0);
+//           sqLiteAlWeatherConfig.setId((long) 1);
+//           sqLiteAlWeatherConfig.save();
+//       }
+//         else {
+//            SQLiteAlWeatherConfig sqLiteAlWeatherConfig = new SQLiteAlWeatherConfig("London", 0, 0);
+//            sqLiteAlWeatherConfig.setId((long) 2);
+//            sqLiteAlWeatherConfig.save();
+//        }
+
+    }
+
 }

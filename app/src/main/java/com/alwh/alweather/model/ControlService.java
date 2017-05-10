@@ -8,8 +8,11 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.alwh.alweather.UI.MainActivity;
+import com.alwh.alweather.database.SQLiteForecastData;
 import com.alwh.alweather.database.SQLiteWeatherData;
 import com.alwh.alweather.service.AlWeatherService;
+
+import static android.content.Context.BIND_AUTO_CREATE;
 
 /**
  * Created by Admin on 09.05.2017.
@@ -23,14 +26,13 @@ public class ControlService {
     ServiceConnection sConn;
     Intent intent;
     AlWeatherService alWeatherService;
-    long interval;
+
     Context context;
 
-    public ControlService(Context context) {
-        this.context = context;
-    }
 
-    public void BindAlWeatherService() {
+    public ControlService(Context context) {
+
+        this.context = context;
         intent = new Intent(this.context, AlWeatherService.class);
 
         sConn = new ServiceConnection() {
@@ -46,14 +48,30 @@ public class ControlService {
                 bound = false;
             }
         };
-
-        context.bindService(this.intent, sConn, 0);
-
     }
 
-    public SQLiteWeatherData getWeather() {
+    public void bindAlWeatherService() {
+
+
+        context.bindService(this.intent, sConn, BIND_AUTO_CREATE);
+
+
+    }
+    public void unbindAlWeatherService() {
+
+        if (!bound) return;
+        context.unbindService(sConn);
+        bound = false;
+
+    }
+    public SQLiteWeatherData getWeather(boolean renew) { // false: from DB, true: from site (online)
         Log.d(TAG, "bind service + alService");
-        return alWeatherService.ReadWeatherFromSQLite();
-    //    return alWeatherService.ReadActyalWeatherFromSQLite();
+        return alWeatherService.TransferWeather(renew);
     }
+
+    public SQLiteForecastData getForecast(boolean renew) { // false: from DB, true: from site (online)
+        return alWeatherService.TransferForecast(renew);
+
+    }
+
 }

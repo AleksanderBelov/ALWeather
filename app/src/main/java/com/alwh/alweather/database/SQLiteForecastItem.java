@@ -6,10 +6,10 @@ import com.orm.SugarRecord;
 import java.util.Date;
 
 /**
- * Created by abelov on 08.05.2017.
+ * Created by abelov on 10.05.2017.
  */
 
-public class SQLiteWeatherData extends SugarRecord{
+public class SQLiteForecastItem  extends SugarRecord {
 
     private String cityName;
     private String country;
@@ -27,51 +27,11 @@ public class SQLiteWeatherData extends SugarRecord{
     private double rain;
     private double snow;
     private Date dt;
-    private Date sunrise;
-    private Date sunset;
 
     //String result = new java.text.SimpleDateFormat("HH:mm").format(new Date(unixTime * 1000));
 
 
-    public SQLiteWeatherData() {
-    }
-
-    public SQLiteWeatherData(JSONWeatherData jsonWeatherData) {
-        setCityName(jsonWeatherData.getName());
-        setCountry(jsonWeatherData.getSys().getCountry());
-        setCoordLon(jsonWeatherData.getCoord().getLon());
-        setCoordLat(jsonWeatherData.getCoord().getLat());
-        setWeatherMain(jsonWeatherData.getWeather().get(0).getMain());
-        setWeatherDescription(jsonWeatherData.getWeather().get(0).getDescription());
-        setWeatherIcon(jsonWeatherData.getWeather().get(0).getIcon());
-        setTemperature(jsonWeatherData.getMain().getTemp());
-        setPressure(jsonWeatherData.getMain().getPressure());
-        setHumidity(jsonWeatherData.getMain().getHumidity());
-        setWindSpeed(jsonWeatherData.getWind().getSpeed());
-
-
-        if (!(jsonWeatherData.getWind().getDeg() == null)) {
-            setWindDeg(jsonWeatherData.getWind().getDeg());
-        } else {
-            setWindDeg(0);
-        }
-
-        setClouds(jsonWeatherData.getClouds().getAll());
-
-        if (!(jsonWeatherData.getRain() == null)) {
-            setRain(jsonWeatherData.getRain().get3h());
-        } else {
-            setRain(0);
-        }
-
-        if (!(jsonWeatherData.getSnow() == null)) {
-            setSnow(jsonWeatherData.getSnow().get3h());
-        } else {
-            setSnow(0);
-        }
-        setDt(jsonWeatherData.getDt());
-        setSunrise(jsonWeatherData.getSys().getSunrise());
-        setSunset(jsonWeatherData.getSys().getSunset());
+    public SQLiteForecastItem() {
     }
 
     public String getCityName() {
@@ -88,6 +48,7 @@ public class SQLiteWeatherData extends SugarRecord{
     public void setCountry(String country) {
         this.country = country;
     }
+
 
 
     public double getCoordLon() {
@@ -203,26 +164,8 @@ public class SQLiteWeatherData extends SugarRecord{
         this.dt = unixDateToDate(dtUnix);
     }
 
-    public Date getSunrise() {
-        return sunrise;
-    }
-
-    public void setSunrise(int sunriseUnix) {
-
-        this.sunrise = unixDateToDate(sunriseUnix);
-    }
-
-    public Date getSunset() {
-        return sunset;
-    }
-
-    public void setSunset(int sunsetUnix) {
-
-        this.sunset = unixDateToDate(sunsetUnix);
-    }
-
     private Date unixDateToDate(int unixDate){
-       return new Date(unixDate * 1000L);
+        return new Date(unixDate * 1000L);
     }
 
 }

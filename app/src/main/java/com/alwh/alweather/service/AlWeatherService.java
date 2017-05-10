@@ -6,8 +6,12 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.alwh.alweather.database.SQLiteAlWeatherConfig;
+import com.alwh.alweather.database.SQLiteForecastData;
+import com.alwh.alweather.database.SQLiteForecastItem;
 import com.alwh.alweather.database.SQLiteWeatherData;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -16,10 +20,13 @@ public class AlWeatherService extends Service {
     final String TAG = "AlWeather/Service: ";
     MyBinder binder = new MyBinder();
 
-    Timer timer;
-    TimerTask tTask;
+    Timer timerWeather;
+    Timer timerForecast;
+    TimerTask tTaskWeather;
+    TimerTask tTaskForecast;
     long interval = 10000;
-    LoadDate loadDate = new LoadDate();
+    SQLiteAlWeatherConfig sqLiteAlWeatherConfig;
+    LoadAllDataFromSite loadAllDataFromSite = new LoadAllDataFromSite();
 
 
     public AlWeatherService() {
@@ -29,43 +36,85 @@ public class AlWeatherService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate");
-        timer = new Timer();
+        this.sqLiteAlWeatherConfig = SQLiteAlWeatherConfig.findById(SQLiteAlWeatherConfig.class, 1);
+        timerWeather = new Timer();
+        timerForecast = new Timer();
+        LoadForecastFromSite();
         LoadWeatherFromSite();
+
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         Log.d(TAG, "onBind");
         return binder;
+ //       return new Binder();
+    }
+    public boolean onUnbind(Intent intent) {
+        Log.d(TAG, "onUnbind");
+        return super.onUnbind(intent);
+    }
 
-
+    public void reloadConfig(){
+        this.sqLiteAlWeatherConfig = SQLiteAlWeatherConfig.findById(SQLiteAlWeatherConfig.class, 1);
     }
 
     void LoadWeatherFromSite() {
         new Thread(new Runnable() {
             public void run() {
-                if (tTask != null) tTask.cancel();
-                if (interval > 0) {
-                    tTask = new TimerTask() {
+                if (tTaskWeather != null) tTaskWeather.cancel();
+                if (!(sqLiteAlWeatherConfig.getIntervalWeather() == 0)) {
+                tTaskWeather = new TimerTask() {
                         public void run() {
-                            Log.d(TAG, "run");
-                            loadDate.getWeatherFromSite();
+                            Log.d(TAG, "LoadWeatherFromSite");
+                            loadAllDataFromSite.getWeatherFromSite(sqLiteAlWeatherConfig.getCity());
                         }
                     };
-                    timer.schedule(tTask, 1000, interval);
+                timerWeather.schedule(tTaskWeather, 1, sqLiteAlWeatherConfig.getIntervalWeather());
                 }
             }
         }).start();
     }
 
-    public SQLiteWeatherData ReadWeatherFromSQLite() {
-        return SQLiteWeatherData.findById(SQLiteWeatherData.class, );
+    void LoadForecastFromSite() {
+        new Thread(new Runnable() {
+            public void run() {
+                if (tTaskForecast != null) tTaskForecast.cancel();
+                if (!(sqLiteAlWeatherConfig.getIntervalForecast() == 0)) {
+                tTaskForecast = new TimerTask() {
+                        public void run() {
+                            Log.d(TAG, "LoadForecastFromSite");
+                            loadAllDataFromSite.getForecastFromSite(sqLiteAlWeatherConfig.getCity());
+                        }
+                    };
+                timerForecast.schedule(tTaskForecast, 1, sqLiteAlWeatherConfig.getIntervalForecast());
+                }
+            }
+        }).start();
     }
 
-    public SQLiteWeatherData ReadActyalWeatherFromSQLite() {
+    public SQLiteWeatherData TransferWeather(boolean renew) {
+        if (renew) {
+            return loadAllDataFromSite.getWeatherFromSite(sqLiteAlWeatherConfig.getCity());
+        } else
+            return SQLiteWeatherData.findById(SQLiteWeatherData.class, SQLiteWeatherData.count(SQLiteWeatherData.class));
 
-        return loadDate.getWeatherFromSite();
+
     }
+
+    public SQLiteForecastData TransferForecast(boolean renew) {
+
+        loadAllDataFromSite.getForecastFromSite(sqLiteAlWeatherConfig.getCity());
+
+        if (renew) {
+            return loadAllDataFromSite.getForecastFromSite(sqLiteAlWeatherConfig.getCity());
+        } else
+        {
+            return (new SQLiteForecastData(SQLiteForecastItem.listAll(SQLiteForecastItem.class)));
+        }
+
+    }
+
 
     public class MyBinder extends Binder {
         public AlWeatherService getService() {

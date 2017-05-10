@@ -2,6 +2,8 @@ package com.alwh.alweather.service;
 
 import android.util.Log;
 
+import com.alwh.alweather.database.SQLiteAlWeatherConfig;
+import com.alwh.alweather.database.SQLiteForecastData;
 import com.alwh.alweather.database.SQLiteWeatherData;
 import com.alwh.alweather.helpers.AppRoot;
 import com.alwh.alweather.json.forecast.JSONForecastData;
@@ -15,28 +17,23 @@ import retrofit2.Response;
  * Created by Admin on 08.05.2017.
  */
 
-public class LoadDate {
+public class LoadAllDataFromSite {
 
-    final String TAG = "AlWeather/LoadDate: ";
+    final String TAG = "LoadAllDataFromSite ";
 
-  //  JSONWeatherData jsonWeatherData;
-    JSONForecastData jsonForecastData;
+    SQLiteForecastData sqLiteForecastData;
     SQLiteWeatherData sqLiteWeatherData;
 
-    public SQLiteWeatherData getWeatherFromSite() {
-  //      jsonWeatherData = new JSONWeatherData();
-        jsonForecastData = new JSONForecastData();
+    public SQLiteWeatherData getWeatherFromSite(String sity) {
 
         Log.d(TAG,"getWeather");
-        AppRoot.getApi().getWeather("Kiev","json","metric",AppRoot.API_KEY).enqueue(new Callback<JSONWeatherData>() {
+        AppRoot.getApi().getWeather(sity,"json","metric",AppRoot.API_KEY).enqueue(new Callback<JSONWeatherData>() {
             @Override
             public void onResponse(Call<JSONWeatherData> call, Response<JSONWeatherData> response) {
                 if (!(response.body() == null)) {
                     sqLiteWeatherData = new SQLiteWeatherData(response.body());
-                    Log.d(TAG,"save to SQLite");
+                    Log.d(TAG,"(getWeather) save to SQLite");
                     sqLiteWeatherData.save();
-
-                    //         test();
                 } else {
                     Log.d(TAG, "response.body() =- NULL");
                 }
@@ -46,19 +43,19 @@ public class LoadDate {
                 Log.d(TAG,t.toString());
             }
         });
-
         return sqLiteWeatherData;
-
     }
 
-    public void getForecast() {
+    public SQLiteForecastData getForecastFromSite(String sity) {
 
         Log.d(TAG,"getForecast");
-        AppRoot.getApi().getForecast("Kiev","json","metric",AppRoot.API_KEY).enqueue(new Callback<JSONForecastData>() {
+        AppRoot.getApi().getForecast(sity,"json","metric",AppRoot.API_KEY).enqueue(new Callback<JSONForecastData>() {
             @Override
             public void onResponse(Call<JSONForecastData> call, Response<JSONForecastData> response) {
                 if (!(response.body() == null)) {
-                    jsonForecastData = response.body();
+                    sqLiteForecastData = new SQLiteForecastData(response.body());
+                    Log.d(TAG,"(getForecast)  save to SQLite");
+                    sqLiteForecastData.save();
                 } else {
                     Log.d(TAG, "response.body() =- NULL");
                 }
@@ -68,5 +65,6 @@ public class LoadDate {
                 Log.d(TAG,t.toString());
             }
         });
+        return sqLiteForecastData;
     }
 }
