@@ -10,8 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.alwh.alweather.R;
 
+import com.alwh.alweather.R;
 import com.alwh.alweather.model.ControlService;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,19 +33,24 @@ public class MainActivity extends AppCompatActivity {
         city = (TextView) findViewById(R.id.textViewA);
         temperature = (TextView) findViewById(R.id.textViewB);
 
-        controlService = new ControlService(this);
+    //    controlService = new ControlService(this);
+        Intent startActivityIntent = new Intent(MainActivity.this, WeatherActivity.class);
+        startActivity(startActivityIntent);
+        MainActivity.this.finish();
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        controlService.bindAlWeatherService();
+//        controlService.bindAlWeatherService();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        controlService.unbindAlWeatherService();
+  //      controlService.unbindAlWeatherService();
     }
 
     public void onClickgetTemperature(View v) {

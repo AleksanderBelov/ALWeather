@@ -66,7 +66,9 @@ public class ControlService {
     }
     public SQLiteWeatherData getWeather(boolean renew) { // false: from DB, true: from site (online)
         Log.d(TAG, "bind service + alService");
+
         return alWeatherService.TransferWeather(renew);
+
     }
 
     public SQLiteForecastData getForecast(boolean renew) { // false: from DB, true: from site (online)
