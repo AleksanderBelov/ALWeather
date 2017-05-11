@@ -53,7 +53,7 @@ public class ControlService {
     public void bindAlWeatherService() {
 
 
-        context.bindService(this.intent, sConn, BIND_AUTO_CREATE);
+        this.context.bindService(this.intent, sConn, 0);
 
 
     }

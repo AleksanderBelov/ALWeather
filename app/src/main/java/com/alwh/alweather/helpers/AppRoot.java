@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.alwh.alweather.database.SQLiteAlWeatherConfig;
 import com.alwh.alweather.database.SQLiteWeatherData;
+import com.alwh.alweather.model.ControlService;
 import com.alwh.alweather.service.AlWeatherService;
 import com.orm.SugarApp;
 import com.orm.SugarContext;
@@ -32,11 +33,9 @@ public class AppRoot extends Application {
 
     final String TAG = "AlWeather/appRoot: ";
     Intent intent;
-    boolean bound = false;
-    ServiceConnection sConn;
-    AlWeatherService alWeatherService;
 
     private Retrofit retrofit;
+    private ControlService controlService;
 
 
     @Override
@@ -53,10 +52,19 @@ public class AppRoot extends Application {
         checkConfigDB();
 
 
+        controlService = new ControlService(this);
+
+        controlService.bindAlWeatherService();
+
         intent = new Intent(this, AlWeatherService.class);
         startService(intent);
  }
 
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        controlService.unbindAlWeatherService();
+    }
 
     public static OpenweathermapAPI getApi() {
         return openweathermapAPI;
@@ -64,7 +72,7 @@ public class AppRoot extends Application {
 
     public void checkConfigDB() {
 
-        SQLiteAlWeatherConfig sqLiteAlWeatherConfig = new SQLiteAlWeatherConfig("Kiev", 10000, 50000);
+        SQLiteAlWeatherConfig sqLiteAlWeatherConfig = new SQLiteAlWeatherConfig("Kiev", 100000, 500000);
         sqLiteAlWeatherConfig.setId((long) 1);
         sqLiteAlWeatherConfig.save();
 
@@ -79,6 +87,14 @@ public class AppRoot extends Application {
 //            sqLiteAlWeatherConfig.save();
 //        }
 
+
+
+        }
+
+    public ControlService getControlService() {
+        return controlService;
     }
+
+
 
 }

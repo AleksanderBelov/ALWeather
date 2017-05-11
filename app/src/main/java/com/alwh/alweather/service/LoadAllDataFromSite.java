@@ -34,6 +34,7 @@ public class LoadAllDataFromSite {
                     sqLiteWeatherData = new SQLiteWeatherData(response.body());
                     Log.d(TAG,"(getWeather) save to SQLite");
                     sqLiteWeatherData.save();
+
                 } else {
                     Log.d(TAG, "response.body() =- NULL");
                 }

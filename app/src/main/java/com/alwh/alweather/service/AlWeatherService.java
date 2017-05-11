@@ -48,7 +48,7 @@ public class AlWeatherService extends Service {
     public IBinder onBind(Intent intent) {
         Log.d(TAG, "onBind");
         return binder;
- //       return new Binder();
+  //      return new Binder();
     }
     public boolean onUnbind(Intent intent) {
         Log.d(TAG, "onUnbind");

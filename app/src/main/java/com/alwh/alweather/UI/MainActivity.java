@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 
 import com.alwh.alweather.R;
+import com.alwh.alweather.helpers.AppRoot;
 import com.alwh.alweather.model.ControlService;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,9 +20,6 @@ public class MainActivity extends AppCompatActivity {
     final String TAG = "AlWeather/MActivity: ";
 
 
-    TextView city;
-    TextView temperature;
-    ControlService controlService;
 
 
 
@@ -30,34 +28,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        city = (TextView) findViewById(R.id.textViewA);
-        temperature = (TextView) findViewById(R.id.textViewB);
 
-    //    controlService = new ControlService(this);
+
         Intent startActivityIntent = new Intent(MainActivity.this, WeatherActivity.class);
         startActivity(startActivityIntent);
         MainActivity.this.finish();
 
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        controlService.bindAlWeatherService();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-  //      controlService.unbindAlWeatherService();
-    }
-
-    public void onClickgetTemperature(View v) {
-        boolean renew = false;
-        controlService.getForecast(renew);
-
-        city.setText(controlService.getWeather(renew).getCityName());
-        temperature.setText("" + controlService.getWeather(renew).getTemperature());
     }
 }

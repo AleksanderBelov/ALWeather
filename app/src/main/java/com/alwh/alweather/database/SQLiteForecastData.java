@@ -58,19 +58,18 @@ public class SQLiteForecastData {
                 sqLiteForecastItem.setSnow(0);
             }
             sqLiteForecastItem.setDt(jsonForecastData.getList().get(i).getDt());
+            sqLiteForecastItem.setId((long)i);
+            sqLiteForecastItem.save();
             forecast.add(sqLiteForecastItem);
         }
         //   SQLiteForecastItem.saveInTx(forecast);
     }
 
     public void save() {
-//       SQLiteForecastItem.deleteAll(SQLiteForecastItem.class);
 
-        for (int i = 0; i < forecast.size(); i++) {
-            forecast.get(i).setId((long) (i+1));
-            forecast.get(i).save();
-        }
+    }
 
-        //      SQLiteForecastItem.saveInTx(forecast);
+    public List<SQLiteForecastItem> getForecast() {
+        return forecast;
     }
 }
