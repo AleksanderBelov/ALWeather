@@ -32,8 +32,8 @@ public class ControlService {
 
     public ControlService(Context context) {
 
-        this.context = context;
-        intent = new Intent(this.context, AlWeatherService.class);
+        context = context;
+        intent = new Intent(context, AlWeatherService.class);
 
         sConn = new ServiceConnection() {
 
@@ -66,8 +66,11 @@ public class ControlService {
     }
     public SQLiteWeatherData getWeather(boolean renew) { // false: from DB, true: from site (online)
         Log.d(TAG, "bind service + alService");
+SQLiteWeatherData sqLiteWeatherData;
 
-        return alWeatherService.TransferWeather(renew);
+
+        sqLiteWeatherData =  alWeatherService.TransferWeather(renew);
+        return sqLiteWeatherData;
 
     }
 

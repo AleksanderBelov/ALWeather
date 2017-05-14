@@ -1,15 +1,20 @@
 package com.alwh.alweather.database;
 
+import android.os.Parcelable;
+
 import com.alwh.alweather.json.weather.JSONWeatherData;
 import com.orm.SugarRecord;
 
+import org.parceler.Parcel;
+
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by abelov on 08.05.2017.
  */
-
-public class SQLiteWeatherData extends SugarRecord{
+@Parcel
+public class SQLiteWeatherData extends SugarRecord {
 
     private String cityName;
     private String country;

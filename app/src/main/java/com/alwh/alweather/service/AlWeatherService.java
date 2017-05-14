@@ -11,9 +11,13 @@ import com.alwh.alweather.database.SQLiteForecastData;
 import com.alwh.alweather.database.SQLiteForecastItem;
 import com.alwh.alweather.database.SQLiteWeatherData;
 
+import org.parceler.Parcels;
+
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.alwh.alweather.helpers.AppRoot.NEW_WEATHER;
 
 public class AlWeatherService extends Service {
 
@@ -94,12 +98,18 @@ public class AlWeatherService extends Service {
     }
 
     public SQLiteWeatherData TransferWeather(boolean renew) {
+        SQLiteWeatherData sqLiteWeatherData;
+
         if (renew) {
-            return loadAllDataFromSite.getWeatherFromSite(sqLiteAlWeatherConfig.getCity());
+            sqLiteWeatherData =  loadAllDataFromSite.getWeatherFromSite(sqLiteAlWeatherConfig.getCity());
         } else
-            return SQLiteWeatherData.findById(SQLiteWeatherData.class, SQLiteWeatherData.count(SQLiteWeatherData.class));
+            sqLiteWeatherData =  SQLiteWeatherData.findById(SQLiteWeatherData.class, SQLiteWeatherData.count(SQLiteWeatherData.class));
 
+        Intent intent = new Intent(NEW_WEATHER);
+        intent.putExtra("weather",  Parcels.wrap(sqLiteWeatherData));
+        sendBroadcast(intent);
 
+        return sqLiteWeatherData;
     }
 
     public SQLiteForecastData TransferForecast(boolean renew) {

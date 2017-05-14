@@ -29,6 +29,7 @@ public class AppRoot extends Application {
 
 
     public static String API_KEY = "dda74e030c23ee9017cf9a8f897f19cf";
+    public static final String NEW_WEATHER = "com.alwh.alweather.action.NEW_WEATHER";
     private static OpenweathermapAPI openweathermapAPI;
 
     final String TAG = "AlWeather/appRoot: ";
@@ -52,18 +53,17 @@ public class AppRoot extends Application {
         checkConfigDB();
 
 
-        controlService = new ControlService(this);
+     //   intent = new Intent(this, AlWeatherService.class);
+     //   startService(intent);
+ //       controlService = new ControlService(this);
+ //       controlService.bindAlWeatherService();
 
-        controlService.bindAlWeatherService();
-
-        intent = new Intent(this, AlWeatherService.class);
-        startService(intent);
  }
 
     @Override
     public void onTerminate() {
         super.onTerminate();
-        controlService.unbindAlWeatherService();
+     //   controlService.unbindAlWeatherService();
     }
 
     public static OpenweathermapAPI getApi() {
