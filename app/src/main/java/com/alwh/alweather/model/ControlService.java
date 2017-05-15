@@ -64,19 +64,19 @@ public class ControlService {
         bound = false;
 
     }
-    public SQLiteWeatherData getWeather(boolean renew) { // false: from DB, true: from site (online)
-        Log.d(TAG, "bind service + alService");
-SQLiteWeatherData sqLiteWeatherData;
+    //public SQLiteWeatherData getWeather(boolean renew) { // false: from DB, true: from site (online)
+  //      Log.d(TAG, "bind service + alService");
+//SQLiteWeatherData sqLiteWeatherData;
 
 
-        sqLiteWeatherData =  alWeatherService.TransferWeather(renew);
-        return sqLiteWeatherData;
+      //  sqLiteWeatherData =  alWeatherService.TransferWeather(renew);
+       // return sqLiteWeatherData;
 
-    }
+  //  }
 
-    public SQLiteForecastData getForecast(boolean renew) { // false: from DB, true: from site (online)
-        return alWeatherService.TransferForecast(renew);
+  //  public SQLiteForecastData getForecast(boolean renew) { // false: from DB, true: from site (online)
+     //   return alWeatherService.TransferForecast(renew);
 
-    }
+//    }
 
 }

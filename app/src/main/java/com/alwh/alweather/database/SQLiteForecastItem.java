@@ -3,12 +3,14 @@ package com.alwh.alweather.database;
 import com.alwh.alweather.json.weather.JSONWeatherData;
 import com.orm.SugarRecord;
 
+import org.parceler.Parcel;
+
 import java.util.Date;
 
 /**
  * Created by abelov on 10.05.2017.
  */
-
+@Parcel
 public class SQLiteForecastItem  extends SugarRecord {
 
     private String cityName;

@@ -34,7 +34,7 @@ public class ForecastActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        fAdapter = new ForecastAdapter(this, controlService.getForecast(false));
-        mRecyclerView.setAdapter(fAdapter);
+//        fAdapter = new ForecastAdapter(this, controlService.getForecast(false));
+    //   mRecyclerView.setAdapter(fAdapter);
     }
 }

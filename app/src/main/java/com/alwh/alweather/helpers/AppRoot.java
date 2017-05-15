@@ -30,6 +30,13 @@ public class AppRoot extends Application {
 
     public static String API_KEY = "dda74e030c23ee9017cf9a8f897f19cf";
     public static final String NEW_WEATHER = "com.alwh.alweather.action.NEW_WEATHER";
+    public static final String QUESTION_TO_SERVECE = "key";
+    public static final String WEATHER = "weather";
+    public static final String FORECAST = "forecast";
+    public static final int TRANSFER_NEW_WEATHER = 1;
+    public static final int TRANSFER_SAVE_WEATHER = 2;
+    public static final int TRANSFER_NEW_FORECAST = 3;
+    public static final int TRANSFER_SAVE_FORECAST = 4;
     private static OpenweathermapAPI openweathermapAPI;
 
     final String TAG = "AlWeather/appRoot: ";

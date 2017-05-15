@@ -1,24 +1,35 @@
 package com.alwh.alweather.UI;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alwh.alweather.R;
 import com.alwh.alweather.adapters.DailyListAdapter;
+import com.alwh.alweather.database.SQLiteForecastData;
 import com.alwh.alweather.database.SQLiteWeatherData;
 import com.alwh.alweather.helpers.AppRoot;
 import com.alwh.alweather.helpers.ConvertData;
 import com.alwh.alweather.model.ControlService;
+import com.alwh.alweather.service.AlWeatherService;
 import com.squareup.picasso.Picasso;
+
+import static com.alwh.alweather.helpers.AppRoot.QUESTION_TO_SERVECE;
+import static com.alwh.alweather.helpers.AppRoot.TRANSFER_NEW_WEATHER;
+import static com.alwh.alweather.helpers.AppRoot.TRANSFER_SAVE_FORECAST;
+import static com.alwh.alweather.helpers.AppRoot.TRANSFER_SAVE_WEATHER;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +37,8 @@ import com.squareup.picasso.Picasso;
  * create an instance of this fragment.
  */
 public class WeatherFragment extends Fragment {
+
+    final String TAG = "AlWeather/W_Fragment ";
 
     ControlService controlService;
     TextView temperatureMain;
@@ -38,8 +51,9 @@ public class WeatherFragment extends Fragment {
     RecyclerView recyclerView;
     View weatherFragmentView;
 
+
     // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -82,14 +96,35 @@ public class WeatherFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         weatherFragmentView = inflater.inflate(R.layout.fragment_weather, container, false);
 
-     //   AppRoot app = (AppRoot) getActivity().getApplication();
-     //   controlService = app.getControlService();
+
+
+
+        Button button = (Button) weatherFragmentView.findViewById(R.id.renew);
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Log.d(TAG, "onClickgetRenew" + QUESTION_TO_SERVECE + TRANSFER_NEW_WEATHER);
+                getActivity()
+                        .startService(new Intent(getActivity(), AlWeatherService.class).
+                                putExtra(QUESTION_TO_SERVECE, TRANSFER_NEW_WEATHER));
+            }
+        });
+
 
         initView();
-        initData(false);
+
+        getActivity()
+                .startService(new Intent(getActivity(), AlWeatherService.class).
+                        putExtra(QUESTION_TO_SERVECE, TRANSFER_SAVE_WEATHER));
+        getActivity()
+                .startService(new Intent(getActivity(), AlWeatherService.class).
+                        putExtra(QUESTION_TO_SERVECE, TRANSFER_SAVE_FORECAST));
+//        initData(false);
 
         return weatherFragmentView;
     }
@@ -111,16 +146,13 @@ public class WeatherFragment extends Fragment {
         humidityMain = (TextView) weatherFragmentView.findViewById(R.id.humidityMain);
         weatherIconMain = (ImageView) weatherFragmentView.findViewById(R.id.weatherIconMain);
 
-     //   GridLayoutManager gridLayoutManager = new GridLayoutManager();
         recyclerView = (RecyclerView) weatherFragmentView.findViewById(R.id.weather_daily_list);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),5));
+        recyclerView.setLayoutManager(new GridLayoutManager(weatherFragmentView.getContext(), 5));
         recyclerView.setHasFixedSize(true);
     }
 
-    public void initData(boolean renew) {
-        SQLiteWeatherData sqLiteWeatherData;
+    public void initData(SQLiteWeatherData sqLiteWeatherData) {
 
-        sqLiteWeatherData = controlService.getWeather(renew);
         temperatureMain.setText("" + sqLiteWeatherData.getTemperature());
         cityName.setText(sqLiteWeatherData.getCityName() + ", " + sqLiteWeatherData.getCountry());
 
@@ -134,7 +166,15 @@ public class WeatherFragment extends Fragment {
                 .resize(0, 220)
                 .into(weatherIconMain);
 
-        dailyListAdapter = new DailyListAdapter(getActivity(), controlService.getForecast(false));
+//        dailyListAdapter = new DailyListAdapter(getActivity(), controlService.getForecast(false));
+ //       recyclerView.setAdapter(dailyListAdapter);
+
+    }
+    public void initDataList(SQLiteForecastData sqLiteForecastData) {
+
+
+
+        dailyListAdapter = new DailyListAdapter(weatherFragmentView.getContext(), sqLiteForecastData);
         recyclerView.setAdapter(dailyListAdapter);
 
     }

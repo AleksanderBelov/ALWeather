@@ -2,15 +2,20 @@ package com.alwh.alweather.database;
 
 import com.alwh.alweather.json.forecast.JSONForecastData;
 
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by abelov on 10.05.2017.
  */
-
+@Parcel
 public class SQLiteForecastData {
     List<SQLiteForecastItem> forecast;
+
+    public SQLiteForecastData() {
+    }
 
     public SQLiteForecastData(List<SQLiteForecastItem> forecast) {
         this.forecast = forecast;
