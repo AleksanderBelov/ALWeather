@@ -1,12 +1,15 @@
 package com.alwh.alweather.UI;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +17,22 @@ import android.view.ViewGroup;
 import com.alwh.alweather.R;
 import com.alwh.alweather.adapters.ForecastAdapter;
 import com.alwh.alweather.database.SQLiteForecastData;
+import com.alwh.alweather.database.SQLiteWeatherData;
 import com.alwh.alweather.service.AlWeatherService;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+
+import org.parceler.Parcels;
+
+import static com.alwh.alweather.helpers.AppRoot.FORECAST;
+import static com.alwh.alweather.helpers.AppRoot.NEW_WEATHER;
 import static com.alwh.alweather.helpers.AppRoot.QUESTION_TO_SERVECE;
 import static com.alwh.alweather.helpers.AppRoot.TRANSFER_SAVE_FORECAST;
+import static com.alwh.alweather.helpers.AppRoot.WEATHER;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +51,7 @@ public class ForecastFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private ForecastAdapter forecastAdapter;
     View forecastFragmentView;
+    Context _context;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -70,6 +86,42 @@ public class ForecastFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        getActivity()
+                .startService(new Intent(getActivity(), AlWeatherService.class).
+                        putExtra(QUESTION_TO_SERVECE, TRANSFER_SAVE_FORECAST));
+
+        BroadcastReceiver br;
+        br = new BroadcastReceiver() {
+            public void onReceive(Context context, Intent intent) {
+                int key = intent.getIntExtra("key", 0);
+                switch (key){
+                    case 0: Log.d("", "Error get key from intent");
+                        break;
+                    case 1:
+                        break;
+                    case 3: initDataList((SQLiteForecastData) Parcels.unwrap(intent.getParcelableExtra(FORECAST)));
+                        break;
+                }
+            }
+        };
+
+        IntentFilter intFilt = new IntentFilter(NEW_WEATHER);
+        _context.registerReceiver(br, intFilt);
+    }
+
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+        _context = context;
+    }
+
+    public static ForecastFragment newInstance(String text) {
+
+        ForecastFragment f = new ForecastFragment();
+
+        return f;
     }
 
     @Override
@@ -95,8 +147,8 @@ public class ForecastFragment extends Fragment {
     public void initDataList(SQLiteForecastData sqLiteForecastData) {
 
 
-        forecastAdapter = new ForecastAdapter(forecastFragmentView.getContext(),sqLiteForecastData);
-        mRecyclerView.setAdapter(forecastAdapter);
+      //  forecastAdapter = new ForecastAdapter(forecastFragmentView.getContext(),sqLiteForecastData);
+       // mRecyclerView.setAdapter(forecastAdapter);
 
     }
 }

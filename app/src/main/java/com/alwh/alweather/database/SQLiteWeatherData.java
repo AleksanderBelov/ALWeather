@@ -53,6 +53,7 @@ public class SQLiteWeatherData extends SugarRecord {
         setPressure(jsonWeatherData.getMain().getPressure());
         setHumidity(jsonWeatherData.getMain().getHumidity());
         setWindSpeed(jsonWeatherData.getWind().getSpeed());
+        setId((long)1);
 
 
         if (!(jsonWeatherData.getWind().getDeg() == null)) {
@@ -230,4 +231,8 @@ public class SQLiteWeatherData extends SugarRecord {
        return new Date(unixDate * 1000L);
     }
 
+    @Override
+    public void setId(Long id) {
+        super.setId(id);
+    }
 }
