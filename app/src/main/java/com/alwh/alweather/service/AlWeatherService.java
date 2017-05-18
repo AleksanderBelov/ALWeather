@@ -5,14 +5,11 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
-
 import com.alwh.alweather.database.SQLiteAlWeatherConfig;
 import com.alwh.alweather.database.SQLiteForecastData;
 import com.alwh.alweather.database.SQLiteForecastItem;
 import com.alwh.alweather.database.SQLiteWeatherData;
-
 import org.parceler.Parcels;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
