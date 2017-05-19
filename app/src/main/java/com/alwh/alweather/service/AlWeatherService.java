@@ -31,7 +31,6 @@ public class AlWeatherService extends Service {
     Timer timerForecast;
     TimerTask tTaskWeather;
     TimerTask tTaskForecast;
-    long interval = 10000;
     SQLiteAlWeatherConfig sqLiteAlWeatherConfig;
     LoadAllDataFromSite loadAllDataFromSite = new LoadAllDataFromSite();
 
@@ -48,7 +47,6 @@ public class AlWeatherService extends Service {
         timerForecast = new Timer();
         LoadForecastFromSite();
         LoadWeatherFromSite();
-
     }
 
     @Override

@@ -41,7 +41,6 @@ public class MainActivity extends Activity implements WeatherFragment.onSomeEven
         intent = new Intent(this, AlWeatherService.class);
         startService(intent);
         Log.d(TAG, "service start");
-
         weatherFragment = new WeatherFragment();
         forecastFragment = new ForecastFragment();
 
@@ -100,8 +99,6 @@ public class MainActivity extends Activity implements WeatherFragment.onSomeEven
             fragmentTransaction.commit();
         }
     }
-
-
 }
 
 

@@ -114,16 +114,12 @@ public class WeatherFragment extends Fragment {
 
 /*        weatherFragmentView.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
-
                 if(event.getAction() == MotionEvent.ACTION_MOVE){
-
                     Log.d(TAG, "move");
-
                 }
                 return true;
             }
         });
-
 */
 
 
