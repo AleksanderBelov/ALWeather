@@ -13,7 +13,10 @@ import android.view.ViewGroup;
 import com.alwh.alweather.R;
 import com.alwh.alweather.adapters.ForecastAdapter;
 import com.alwh.alweather.database.SQLiteForecastData;
+import com.alwh.alweather.model.MessageEvent;
 import com.alwh.alweather.service.AlWeatherService;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import static com.alwh.alweather.helpers.AppRoot.QUESTION_TO_SERVECE;
 import static com.alwh.alweather.helpers.AppRoot.TRANSFER_SAVE_FORECAST;
@@ -69,24 +72,26 @@ public class ForecastFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
-        // Inflate the layout for this fragment
-        forecastFragmentView =  inflater.inflate(R.layout.fragment_forecast, container, false);
+
+        forecastFragmentView = inflater.inflate(R.layout.fragment_forecast, container, false);
+        EventBus.getDefault().register(this);
 
         getActivity()
                 .startService(new Intent(getActivity(), AlWeatherService.class).
                         putExtra(QUESTION_TO_SERVECE, TRANSFER_SAVE_FORECAST));
 
-      mRecyclerView = (RecyclerView) forecastFragmentView.findViewById(R.id.forecast_view);
-      mRecyclerView.setLayoutManager(new LinearLayoutManager(forecastFragmentView.getContext()));
-      mRecyclerView.setHasFixedSize(true);
+        mRecyclerView = (RecyclerView) forecastFragmentView.findViewById(R.id.forecast_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(forecastFragmentView.getContext()));
+        mRecyclerView.setHasFixedSize(true);
 
         return forecastFragmentView;
 
     }
+
     public void initDataList(SQLiteForecastData sqLiteForecastData) {
         Log.d(TAG, "initDataList");
 
-        forecastAdapter = new ForecastAdapter(_context,sqLiteForecastData);
+        forecastAdapter = new ForecastAdapter(_context, sqLiteForecastData);
         mRecyclerView.setAdapter(forecastAdapter);
 
     }
@@ -96,5 +101,19 @@ public class ForecastFragment extends Fragment {
         super.onAttach(context);
         _context = context;
 
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onEvent(MessageEvent event) {
+        Log.d(TAG, "onEvent");
+        if (event.type == 2) {
+            initDataList(event.sqLiteForecastData);
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.alwh.alweather.UI;
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,15 +12,24 @@ import android.util.Log;
 import com.alwh.alweather.R;
 import com.alwh.alweather.database.SQLiteForecastData;
 import com.alwh.alweather.database.SQLiteWeatherData;
+import com.alwh.alweather.model.MessageEvent;
+import com.alwh.alweather.model.SelectShow;
 import com.alwh.alweather.service.AlWeatherService;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.parceler.Parcels;
+
 
 import static com.alwh.alweather.helpers.AppRoot.FORECAST;
 import static com.alwh.alweather.helpers.AppRoot.NEW_WEATHER;
+import static com.alwh.alweather.helpers.AppRoot.QUESTION_TO_SERVECE;
+import static com.alwh.alweather.helpers.AppRoot.TRANSFER_SAVE_FORECAST;
+import static com.alwh.alweather.helpers.AppRoot.TRANSFER_SAVE_WEATHER;
 import static com.alwh.alweather.helpers.AppRoot.WEATHER;
 
 
-public class MainActivity extends Activity implements WeatherFragment.onSomeEventListener {
+public class MainActivity extends Activity{
 
 
     final String TAG = "AlWeather/MActivity ";
@@ -33,24 +44,32 @@ public class MainActivity extends Activity implements WeatherFragment.onSomeEven
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        intent = new Intent(this, AlWeatherService.class);
-        startService(intent);
+
+startService(new Intent(this, AlWeatherService.class).
+                        putExtra(QUESTION_TO_SERVECE, TRANSFER_SAVE_WEATHER));
+
+
+startService(new Intent(this, AlWeatherService.class).
+                        putExtra(QUESTION_TO_SERVECE, TRANSFER_SAVE_FORECAST));
+
         Log.d(TAG, "service start");
         weatherFragment = new WeatherFragment();
         forecastFragment = new ForecastFragment();
 
-        fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.frame_conteiner, weatherFragment);
-        fragmentTransaction.commit();
+        EventBus.getDefault().register(this);
 
-     //      fragmentTransaction = getFragmentManager().beginTransaction();
-     //      fragmentTransaction.replace(R.id.frame_conteiner, forecastFragment);
-     //      fragmentTransaction.commit();
+
+
+
+        showFragment(weatherFragment);
+
+
 
         br = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
@@ -59,45 +78,50 @@ public class MainActivity extends Activity implements WeatherFragment.onSomeEven
                     case 0: Log.d(TAG, "Error get key from intent");
                         break;
                     case 1:
-                    //    weatherFragment.initData((SQLiteWeatherData) Parcels.unwrap(intent.getParcelableExtra(WEATHER)));
 
-                        sqliteWeatherData = (SQLiteWeatherData) Parcels.unwrap(intent.getParcelableExtra(WEATHER));
+                        EventBus.getDefault().post(
+                                new MessageEvent(
+                                        (SQLiteWeatherData) Parcels.unwrap(intent.getParcelableExtra(WEATHER))));
                         break;
                     case 3:
-                        sqLiteForecastData = Parcels.unwrap(intent.getParcelableExtra(FORECAST));
-                        sqliteWeatherData = (SQLiteWeatherData) Parcels.unwrap(intent.getParcelableExtra(WEATHER));
-                     //   weatherFragment.initDataList(sqLiteForecastData);
-                     //   forecastFragment.initDataList(sqLiteForecastData);
-                     //   break;
-
-
+                        EventBus.getDefault().post(
+                                new MessageEvent(
+                                        (SQLiteForecastData) Parcels.unwrap(intent.getParcelableExtra(FORECAST))));
                 }
-                weatherFragment.initDataList(sqLiteForecastData);
-                weatherFragment.initData(sqliteWeatherData);
-
- //               forecastFragment.initDataList(sqLiteForecastData);
-
             }
         };
         IntentFilter intFilt = new IntentFilter(NEW_WEATHER);
         registerReceiver(br, intFilt);
     }
 
-    public void someEvent(int page) {
-        // transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-         //transaction.setCustomAnimations(R.animator.slide_in_left, R.animator.slide_in_right);
+    @Subscribe
+    public void onEvent(SelectShow event){
 
-        if(weatherFragment.isVisible()){
-            fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame_conteiner, forecastFragment);
-            fragmentTransaction.commit();
-            forecastFragment.initDataList(sqLiteForecastData);
+        if(event.selectShow == 2){
+
+            showFragment(forecastFragment);
+            EventBus.getDefault().post(new MessageEvent(sqLiteForecastData));
+
         }else{
-            fragmentTransaction.replace(R.id.frame_conteiner, weatherFragment);
-            fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame_conteiner, forecastFragment);
-            fragmentTransaction.commit();
+            showFragment(weatherFragment);
         }
+    }
+
+    private void showFragment(Fragment fragment) {
+        FragmentManager fragmentManager = MainActivity.this.getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+     //   fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransaction.setCustomAnimations(R.animator.slide_in_left, R.animator.slide_in_right);
+        fragmentTransaction
+                .replace(R.id.frame_conteiner, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 }
 
