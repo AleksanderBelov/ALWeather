@@ -8,6 +8,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -20,6 +21,7 @@ import com.alwh.alweather.database.SQLiteWeatherData;
 import com.alwh.alweather.helpers.ConvertData;
 import com.alwh.alweather.model.MessageEvent;
 import com.alwh.alweather.model.SelectShow;
+import com.alwh.alweather.model.SwipeDirectionDetector;
 import com.alwh.alweather.service.AlWeatherService;
 import com.squareup.picasso.Picasso;
 import android.app.Fragment;
@@ -62,6 +64,10 @@ public class WeatherFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+
+    private SwipeDirectionDetector directionDetector;
+    private SwipeDirectionDetector.Direction direction;
 
     public interface onSomeEventListener {
         public void someEvent(int page);
@@ -109,6 +115,13 @@ public class WeatherFragment extends Fragment {
 
         weatherFragmentView = inflater.inflate(R.layout.fragment_weather, container, false);
         EventBus.getDefault().register(this);
+
+        directionDetector = new SwipeDirectionDetector(_context) {
+            @Override
+            public void onDirectionDetected(Direction direction) {
+                direction = direction;
+            }
+        };
 
 
 
@@ -194,5 +207,11 @@ public class WeatherFragment extends Fragment {
         if (event.type == 2) {
             initDataList(event.sqLiteForecastData);
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        directionDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
     }
 }
