@@ -78,6 +78,7 @@ public abstract class SwipeDirectionDetector {
 
         public static Direction get(double angle) {
             if (inRange(angle, 45, 135)) {
+
                 return Direction.UP;
             } else if (inRange(angle, 0, 45) || inRange(angle, 315, 360)) {
                 return Direction.RIGHT;

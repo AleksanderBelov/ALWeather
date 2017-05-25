@@ -66,8 +66,6 @@ public class WeatherFragment extends Fragment {
     private String mParam2;
 
 
-    private SwipeDirectionDetector directionDetector;
-    private SwipeDirectionDetector.Direction direction;
 
     public interface onSomeEventListener {
         public void someEvent(int page);
@@ -116,12 +114,7 @@ public class WeatherFragment extends Fragment {
         weatherFragmentView = inflater.inflate(R.layout.fragment_weather, container, false);
         EventBus.getDefault().register(this);
 
-        directionDetector = new SwipeDirectionDetector(_context) {
-            @Override
-            public void onDirectionDetected(Direction direction) {
-                direction = direction;
-            }
-        };
+
 
 
 
@@ -207,11 +200,5 @@ public class WeatherFragment extends Fragment {
         if (event.type == 2) {
             initDataList(event.sqLiteForecastData);
         }
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        directionDetector.onTouchEvent(event);
-        return super.onTouchEvent(event);
     }
 }

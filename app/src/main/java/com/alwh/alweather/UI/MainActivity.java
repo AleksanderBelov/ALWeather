@@ -1,4 +1,5 @@
 package com.alwh.alweather.UI;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -9,11 +10,17 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.app.FragmentTransaction;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.widget.Toast;
+
 import com.alwh.alweather.R;
 import com.alwh.alweather.database.SQLiteForecastData;
 import com.alwh.alweather.database.SQLiteWeatherData;
 import com.alwh.alweather.model.MessageEvent;
 import com.alwh.alweather.model.SelectShow;
+import com.alwh.alweather.model.SwipeDetector;
+import com.alwh.alweather.model.SwipeDirectionDetector;
 import com.alwh.alweather.service.AlWeatherService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -29,7 +36,7 @@ import static com.alwh.alweather.helpers.AppRoot.TRANSFER_SAVE_WEATHER;
 import static com.alwh.alweather.helpers.AppRoot.WEATHER;
 
 
-public class MainActivity extends Activity{
+public class MainActivity extends Activity {
 
 
     final String TAG = "AlWeather/MActivity ";
@@ -41,7 +48,7 @@ public class MainActivity extends Activity{
     SQLiteForecastData sqLiteForecastData;
     SQLiteWeatherData sqliteWeatherData;
 
-
+    private GestureDetector gestureDetector;
 
 
 
@@ -51,12 +58,12 @@ public class MainActivity extends Activity{
         setContentView(R.layout.activity_main);
 
 
-startService(new Intent(this, AlWeatherService.class).
-                        putExtra(QUESTION_TO_SERVECE, TRANSFER_SAVE_WEATHER));
+        startService(new Intent(this, AlWeatherService.class).
+                putExtra(QUESTION_TO_SERVECE, TRANSFER_SAVE_WEATHER));
 
 
-startService(new Intent(this, AlWeatherService.class).
-                        putExtra(QUESTION_TO_SERVECE, TRANSFER_SAVE_FORECAST));
+        startService(new Intent(this, AlWeatherService.class).
+                putExtra(QUESTION_TO_SERVECE, TRANSFER_SAVE_FORECAST));
 
         Log.d(TAG, "service start");
         weatherFragment = new WeatherFragment();
@@ -67,15 +74,19 @@ startService(new Intent(this, AlWeatherService.class).
 
 
 
-        showFragment(weatherFragment);
+        gestureDetector = initGestureDetector();
 
+
+
+        showFragment(weatherFragment);
 
 
         br = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
                 int key = intent.getIntExtra("key", 0);
-                switch (key){
-                    case 0: Log.d(TAG, "Error get key from intent");
+                switch (key) {
+                    case 0:
+                        Log.d(TAG, "Error get key from intent");
                         break;
                     case 1:
 
@@ -95,14 +106,14 @@ startService(new Intent(this, AlWeatherService.class).
     }
 
     @Subscribe
-    public void onEvent(SelectShow event){
+    public void onEvent(SelectShow event) {
 
-        if(event.selectShow == 2){
+        if (event.selectShow == 2) {
 
             showFragment(forecastFragment);
             EventBus.getDefault().post(new MessageEvent(sqLiteForecastData));
 
-        }else{
+        } else {
             showFragment(weatherFragment);
         }
     }
@@ -110,8 +121,9 @@ startService(new Intent(this, AlWeatherService.class).
     private void showFragment(Fragment fragment) {
         FragmentManager fragmentManager = MainActivity.this.getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-     //   fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        //   fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.setCustomAnimations(R.animator.slide_in_left, R.animator.slide_in_right);
+
         fragmentTransaction
                 .replace(R.id.frame_conteiner, fragment)
                 .addToBackStack(null)
@@ -122,8 +134,57 @@ startService(new Intent(this, AlWeatherService.class).
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
         super.onDestroy();
+
+    }
+
+  //  public boolean onTouchEvent(MotionEvent event) {
+  //      return gestureDetector.onTouchEvent(event);
+
+//    }
+
+
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        return gestureDetector.onTouchEvent(event);
+
+
+    }
+
+    private GestureDetector initGestureDetector() {
+        return new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
+
+            private SwipeDetector detector = new SwipeDetector();
+
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+                                   float velocityY) {
+                try {
+                    if (detector.isSwipeDown(e1, e2, velocityY)) {
+                        return false;
+                    } else if (detector.isSwipeUp(e1, e2, velocityY)) {
+
+
+                        showToast("Up Swipe");
+                    } else if (detector.isSwipeLeft(e1, e2, velocityX)) {
+                        showFragment(forecastFragment);
+                        showToast("Left Swipe");
+                    } else if (detector.isSwipeRight(e1, e2, velocityX)) {
+                        showFragment(weatherFragment);
+                        showToast("Right Swipe");
+                    }
+                } catch (Exception e) {
+                } //for now, ignore
+                return false;
+            }
+
+            private void showToast(String phrase) {
+
+
+
+                Toast.makeText(getApplicationContext(), phrase, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
+
 
 
 
