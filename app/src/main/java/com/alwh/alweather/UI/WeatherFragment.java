@@ -115,18 +115,6 @@ public class WeatherFragment extends Fragment {
         EventBus.getDefault().register(this);
 
 
-
-
-
-        Button button = (Button) weatherFragmentView.findViewById(R.id.renew);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(new SelectShow(2));
-            }
-        });
-
-
         initView();
         getActivity()
                 .startService(new Intent(getActivity(), AlWeatherService.class).

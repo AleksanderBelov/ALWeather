@@ -31,6 +31,7 @@ import org.parceler.Parcels;
 import static com.alwh.alweather.helpers.AppRoot.FORECAST;
 import static com.alwh.alweather.helpers.AppRoot.NEW_WEATHER;
 import static com.alwh.alweather.helpers.AppRoot.QUESTION_TO_SERVECE;
+import static com.alwh.alweather.helpers.AppRoot.TRANSFER_NEW_WEATHER;
 import static com.alwh.alweather.helpers.AppRoot.TRANSFER_SAVE_FORECAST;
 import static com.alwh.alweather.helpers.AppRoot.TRANSFER_SAVE_WEATHER;
 import static com.alwh.alweather.helpers.AppRoot.WEATHER;
@@ -47,6 +48,7 @@ public class MainActivity extends Activity {
     BroadcastReceiver br;
     SQLiteForecastData sqLiteForecastData;
     SQLiteWeatherData sqliteWeatherData;
+    Context context;
 
     private GestureDetector gestureDetector;
 
@@ -56,6 +58,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context = this;
 
 
         startService(new Intent(this, AlWeatherService.class).
@@ -144,8 +147,8 @@ public class MainActivity extends Activity {
 
 
     public boolean dispatchTouchEvent(MotionEvent event) {
+        super.dispatchTouchEvent(event);
         return gestureDetector.onTouchEvent(event);
-
 
     }
 
@@ -158,8 +161,18 @@ public class MainActivity extends Activity {
                                    float velocityY) {
                 try {
                     if (detector.isSwipeDown(e1, e2, velocityY)) {
-                        return false;
+
+                        startService(new Intent(context, AlWeatherService.class).
+                                putExtra(QUESTION_TO_SERVECE, TRANSFER_NEW_WEATHER));
+
+
+                        showToast("update");
+
                     } else if (detector.isSwipeUp(e1, e2, velocityY)) {
+
+
+
+                        Log.d(TAG, "update " + QUESTION_TO_SERVECE + TRANSFER_NEW_WEATHER);
 
 
                         showToast("Up Swipe");
@@ -176,9 +189,6 @@ public class MainActivity extends Activity {
             }
 
             private void showToast(String phrase) {
-
-
-
                 Toast.makeText(getApplicationContext(), phrase, Toast.LENGTH_SHORT).show();
             }
         });
