@@ -1,0 +1,86 @@
+<resources>
+    <string name="200">thunderstorm with light rain</string>
+    <string name="201">thunderstorm with rain</string>
+    <string name="202">thunderstorm with heavy rain</string>
+    <string name="210">light thunderstorm</string>
+    <string name="211">thunderstorm</string>
+    <string name="212">heavy thunderstorm</string>
+	<string name="221">ragged thunderstorm</string>
+    <string name="230">thunderstorm with light drizzle</string>
+    <string name="231">thunderstorm with drizzle</string>
+    <string name="232">thunderstorm with heavy drizzle</string>
+	
+    <string name="300">light intensity drizzle</string>
+    <string name="301">drizzle</string>
+    <string name="302">heavy intensity drizzle</string>
+    <string name="310">light intensity drizzle rain</string>
+    <string name="311">drizzle rain</string>
+    <string name="312">heavy intensity drizzle rain</string>
+    <string name="313">shower rain and drizzle</string>
+    <string name="314">heavy shower rain and drizzle</string>
+	<string name="321">shower drizzle</string>
+		
+    <string name="500">light rain</string>
+    <string name="501">moderate rain</string>
+    <string name="502">heavy intensity rain</string>
+    <string name="503">very heavy rain</string>
+    <string name="504">extreme rain</string>
+    <string name="511">freezing rain</string>
+    <string name="520">light intensity shower rain</string>
+    <string name="521">shower rain</string>
+    <string name="522">heavy intensity shower rain</string>
+    <string name="531">ragged shower rain</string>
+	
+    <string name="600">light snow</string>
+	<string name="601">snow</string>
+    <string name="602">heavy snow</string>
+    <string name="611">sleet</string>
+    <string name="612">shower sleet</string>
+    <string name="615">light rain and snow</string>
+    <string name="616">rain and snow</string>
+    <string name="620">light shower snow</string>
+    <string name="621">shower snow</string>
+    <string name="622">heavy shower snow</string>
+	
+    <string name="701">mist</string>
+    <string name="711">smoke</string>
+    <string name="721">haze</string>
+    <string name="731">sand, dust whirls</string>
+    <string name="741">fog</string>
+    <string name="751">sand</string>
+    <string name="761">dust</string>
+    <string name="762">volcanic ash</string>
+    <string name="771">squalls</string>
+    <string name="781">tornado</string>
+	
+    <string name="800">	clear sky</string>
+	
+    <string name="801">few clouds</string>
+    <string name="802">scattered clouds</string>
+    <string name="803">broken clouds</string>
+    <string name="804">overcast clouds</string>
+	
+    <string name="900">tornado</string>
+    <string name="901">tropical storm</string>
+    <string name="902">hurricane</string>
+    <string name="903">cold</string>
+    <string name="904">hot</string>
+    <string name="905">windy</string>
+    <string name="906">hail</string>
+	
+    <string name="951">calm</string>
+    <string name="952">light breeze</string>
+    <string name="953">gentle breeze</string>
+    <string name="954">moderate breeze</string>
+    <string name="955">fresh breeze</string>
+    <string name="956">strong breeze</string>
+    <string name="957">high wind, near gale</string>
+    <string name="958">gale</string>
+    <string name="959">severe gale</string>
+    <string name="960">storm</string>
+    <string name="961">violent storm</string>
+    <string name="962">hurricane</string>
+
+	
+    <string name="digit_font">fonts/dsdigib.ttf</string>
+</resources>

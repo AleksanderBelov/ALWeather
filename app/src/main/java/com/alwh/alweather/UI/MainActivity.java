@@ -142,7 +142,6 @@ public class MainActivity extends Activity {
 
   //  public boolean onTouchEvent(MotionEvent event) {
   //      return gestureDetector.onTouchEvent(event);
-
 //    }
 
 
@@ -161,20 +160,11 @@ public class MainActivity extends Activity {
                                    float velocityY) {
                 try {
                     if (detector.isSwipeDown(e1, e2, velocityY)) {
-
                         startService(new Intent(context, AlWeatherService.class).
                                 putExtra(QUESTION_TO_SERVECE, TRANSFER_NEW_WEATHER));
-
-
                         showToast("update");
-
                     } else if (detector.isSwipeUp(e1, e2, velocityY)) {
-
-
-
                         Log.d(TAG, "update " + QUESTION_TO_SERVECE + TRANSFER_NEW_WEATHER);
-
-
                         showToast("Up Swipe");
                     } else if (detector.isSwipeLeft(e1, e2, velocityX)) {
                         showFragment(forecastFragment);
