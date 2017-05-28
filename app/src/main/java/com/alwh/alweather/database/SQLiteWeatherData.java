@@ -8,7 +8,11 @@ import com.orm.SugarRecord;
 import org.parceler.Parcel;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
+
+import static java.lang.Math.round;
 
 /**
  * Created by abelov on 08.05.2017.
@@ -137,7 +141,11 @@ public class SQLiteWeatherData extends SugarRecord {
     }
 
     public double getTemperature() {
-        return temperature;
+        BigDecimal decimal = new BigDecimal(temperature);
+        decimal = decimal.setScale(0, RoundingMode.HALF_UP);
+        double result = decimal.doubleValue();
+        return result;
+
     }
 
     public void setTemperature(double temperature) {

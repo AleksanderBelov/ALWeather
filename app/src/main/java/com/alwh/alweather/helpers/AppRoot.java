@@ -37,7 +37,11 @@ public class AppRoot extends Application {
     public static final int TRANSFER_SAVE_WEATHER = 2;
     public static final int TRANSFER_NEW_FORECAST = 3;
     public static final int TRANSFER_SAVE_FORECAST = 4;
+    public static final int PART_DAY = 8;
+
     private static OpenweathermapAPI openweathermapAPI;
+
+
 
     final String TAG = "AlWeather/appRoot: ";
     Intent intent;

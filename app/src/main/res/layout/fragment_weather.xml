@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/bacgroun_weather"
+    android:background="@drawable/background_04"
     tools:context="com.alwh.alweather.UI.WeatherFragment">
 
     <LinearLayout
@@ -14,21 +14,12 @@
         android:layout_weight="8"
         android:orientation="vertical">
 
-        <LinearLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="8"
-            android:orientation="horizontal">
-
-        </LinearLayout>
-
 
         <TextView
             android:id="@+id/cityName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="right"
             android:layout_marginTop="@dimen/_16sdp"
             android:text="@string/city_country"
             android:textColor="@color/colorWhite"
@@ -38,7 +29,7 @@
             android:id="@+id/currentDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="right"
             android:layout_marginTop="@dimen/_8sdp"
             android:text="@string/date_today"
             android:textColor="@color/colorWhite"
@@ -53,23 +44,99 @@
 
             <ImageView
                 android:id="@+id/weatherIconMain"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_24sdp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="left"
+                android:layout_marginTop="@dimen/_1sdp"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/sun" />
+                android:layout_weight="1"
+                android:src="@drawable/l10d" />
 
             <TextView
                 android:id="@+id/temperatureMain"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_150sdp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="@dimen/_12sdp"
                 android:text="17.6"
+                android:layout_weight="2"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_90sdp"
                 android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/weatherInformation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:text="party cloud"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_14sdp" />
+
+            <TextView
+                android:id="@+id/atmosphericPressure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:text="@string/atmospheric_pressure"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_14sdp" />
+            <TextView
+                android:id="@+id/wind_deg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:text="@string/wind_deg"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_14sdp" />
+            <TextView
+                android:id="@+id/windSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:text="@string/wind_speed"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_14sdp" />
+            <TextView
+                android:id="@+id/humidity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:text="@string/humidity"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_14sdp" />
+            <TextView
+                android:id="@+id/sunrise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:text="@string/sunrise"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_14sdp" />
+            <TextView
+                android:id="@+id/sunset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:text="@string/sunset"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_14sdp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -90,7 +157,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/wind"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_14sdp"
                     android:textStyle="bold" />
@@ -100,7 +166,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
-                    android:text="@string/wind_speed"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_14sdp" />
             </LinearLayout>
@@ -124,7 +189,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:text="@string/humidity"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_14sdp"
                     android:textStyle="bold" />
@@ -135,7 +199,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/_4sdp"
-                    android:text="@string/humidity_rate"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_14sdp" />
             </LinearLayout>
@@ -156,7 +219,8 @@
             android:layout_gravity="center_horizontal"
             android:orientation="vertical"
             android:dividerHeight="8dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="2"
             android:scrollbars="none"/>
     </LinearLayout>
 </LinearLayout>

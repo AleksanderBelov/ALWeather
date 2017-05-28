@@ -3,6 +3,7 @@ package com.alwh.alweather.UI;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +28,8 @@ import com.squareup.picasso.Picasso;
 import android.app.Fragment;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import static com.alwh.alweather.helpers.AppRoot.PART_DAY;
 import static com.alwh.alweather.helpers.AppRoot.QUESTION_TO_SERVECE;
 import static com.alwh.alweather.helpers.AppRoot.TRANSFER_SAVE_FORECAST;
 import static com.alwh.alweather.helpers.AppRoot.TRANSFER_SAVE_WEATHER;
@@ -45,8 +48,13 @@ public class WeatherFragment extends Fragment {
     TextView temperatureMain;
     TextView cityName;
     TextView currentDate;
-    TextView windMain;
-    TextView humidityMain;
+    TextView windDeg;
+    TextView humidity;
+    TextView weatherInformation;
+    TextView windSpeed;
+    TextView atmosphericPressure;
+    TextView sunrise;
+    TextView sunset;
     ImageView weatherIconMain;
     DailyListAdapter dailyListAdapter;
     RecyclerView recyclerView;
@@ -128,24 +136,39 @@ public class WeatherFragment extends Fragment {
 
     public void initView() {
         Log.d(TAG, "initView");
-        temperatureMain = (TextView) weatherFragmentView.findViewById(R.id.temperatureMain);
-        temperatureMain.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/dsdigib.ttf"));
-
         cityName = (TextView) weatherFragmentView.findViewById(R.id.cityName);
-        cityName.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/dsdigib.ttf"));
+        cityName.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
 
         currentDate = (TextView) weatherFragmentView.findViewById(R.id.currentDate);
-        //     currentDate.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/dsdigib.ttf"));
+        currentDate.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/corkiRegular.ttf"));
 
         temperatureMain = (TextView) weatherFragmentView.findViewById(R.id.temperatureMain);
-        temperatureMain.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/dsdigib.ttf"));
+        temperatureMain.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
 
-        windMain = (TextView) weatherFragmentView.findViewById(R.id.windMain);
-        humidityMain = (TextView) weatherFragmentView.findViewById(R.id.humidityMain);
+        weatherInformation = (TextView) weatherFragmentView.findViewById(R.id.weatherInformation);
+        weatherInformation.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
+
+        atmosphericPressure = (TextView) weatherFragmentView.findViewById(R.id.atmosphericPressure);
+        atmosphericPressure.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
+
+        windDeg = (TextView) weatherFragmentView.findViewById(R.id.wind_deg);
+        windDeg.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
+
+        windSpeed = (TextView) weatherFragmentView.findViewById(R.id.windSpeed);
+        windSpeed.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
+
+        humidity = (TextView) weatherFragmentView.findViewById(R.id.humidity);
+        humidity.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
+
+        sunrise = (TextView) weatherFragmentView.findViewById(R.id.sunrise);
+        sunrise.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
+
+        sunset = (TextView) weatherFragmentView.findViewById(R.id.sunset);
+        sunset.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/corkiRegular.ttf"));
         weatherIconMain = (ImageView) weatherFragmentView.findViewById(R.id.weatherIconMain);
 
         recyclerView = (RecyclerView) weatherFragmentView.findViewById(R.id.weather_daily_list);
-        recyclerView.setLayoutManager(new GridLayoutManager(weatherFragmentView.getContext(), 5));
+        recyclerView.setLayoutManager(new GridLayoutManager(weatherFragmentView.getContext(), PART_DAY));
         recyclerView.setHasFixedSize(true);
     }
 
@@ -153,23 +176,31 @@ public class WeatherFragment extends Fragment {
     public void initData(SQLiteWeatherData sqLiteWeatherData) {
 
         Log.d(TAG, "initData");
-        temperatureMain.setText("" + sqLiteWeatherData.getTemperature());
+        temperatureMain.setText("" + (int)sqLiteWeatherData.getTemperature() + (char)176 + "C");
         cityName.setText(sqLiteWeatherData.getCityName() + ", " + sqLiteWeatherData.getCountry());
 
         currentDate.setText("last change: " + ConvertData.passedMin(sqLiteWeatherData.getDt()) + " min age");
 
-        windMain.setText(sqLiteWeatherData.getWindSpeed() + " km/h");
-        humidityMain.setText(sqLiteWeatherData.getHumidity() + "%");
-
         Picasso.with(getActivity())
-                .load("http://openweathermap.org/img/w/" + sqLiteWeatherData.getWeatherIcon() + ".png")
-                .resize(0, 220)
+                .load(ConvertData.getIconWeatherL(sqLiteWeatherData.getWeatherIcon(),getActivity()))
+//                .load(getResources().getIdentifier("@drawable/l" + sqLiteWeatherData.getWeatherIcon(), null, getActivity().getPackageName()))
+              .fit()
+                //  .resize(0, 220)
                 .into(weatherIconMain);
 
+
+//        weatherInformation.setText(getString(ConvertData.getWeatherInfo(sqLiteWeatherData.getWeatherDescription(),getActivity())) + " ");
+        weatherInformation.setText(sqLiteWeatherData.getWeatherDescription());
+        atmosphericPressure.setText(getString(R.string.atmospheric_pressure) + " " + sqLiteWeatherData.getPressure());
+        windDeg.setText(getString(R.string.wind) + " " + sqLiteWeatherData.getWindDeg());
+        windSpeed.setText(getString(R.string.wind_speed) + " " + sqLiteWeatherData.getWindSpeed() + "km/h");
+        humidity.setText(getString(R.string.humidity) + " " + sqLiteWeatherData.getHumidity() + "%");
+        sunrise.setText(getString(R.string.sunrise) + " " + ConvertData.getTime(sqLiteWeatherData.getSunrise()));
+        sunset.setText(getString(R.string.sunset) + " " + ConvertData.getTime(sqLiteWeatherData.getSunset()));
     }
 
     public void initDataList(SQLiteForecastData sqLiteForecastData) {
-        dailyListAdapter = new DailyListAdapter(weatherFragmentView.getContext(), sqLiteForecastData);
+        dailyListAdapter = new DailyListAdapter(weatherFragmentView.getContext(), sqLiteForecastData, weatherFragmentView.getWidth());
         recyclerView.setAdapter(dailyListAdapter);
     }
 

@@ -37,7 +37,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
         Picasso.with(context)
-                .load("http://openweathermap.org/img/w/" + sqLiteForecastData.getForecast().get(position).getWeatherIcon() + ".png")
+ //               .load("http://openweathermap.org/img/w/" + sqLiteForecastData.getForecast().get(position).getWeatherIcon() + ".png")
+                .load(ConvertData.getIconWeatherL(sqLiteForecastData.getForecast().get(position).getWeatherIcon(),context))
                 .resize(0, 150)
                 .into(holder.weatherIcon);
 
