@@ -184,7 +184,7 @@ public class WeatherFragment extends Fragment {
         Picasso.with(getActivity())
                 .load(ConvertData.getIconWeatherL(sqLiteWeatherData.getWeatherIcon(),getActivity()))
 //                .load(getResources().getIdentifier("@drawable/l" + sqLiteWeatherData.getWeatherIcon(), null, getActivity().getPackageName()))
-              .fit()
+       //       .fit()
                 //  .resize(0, 220)
                 .into(weatherIconMain);
 

@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
     final String TAG = "AlWeather/MActivity ";
     WeatherFragment weatherFragment;
     ForecastFragment forecastFragment;
-    FragmentTransaction fragmentTransaction;
+    ConfigureFragment configureFragment;
     Intent intent;
     BroadcastReceiver br;
     SQLiteForecastData sqLiteForecastData;
@@ -71,6 +71,7 @@ public class MainActivity extends Activity {
         Log.d(TAG, "service start");
         weatherFragment = new WeatherFragment();
         forecastFragment = new ForecastFragment();
+        configureFragment = new ConfigureFragment();
 
         EventBus.getDefault().register(this);
 
@@ -164,8 +165,9 @@ public class MainActivity extends Activity {
                                 putExtra(QUESTION_TO_SERVECE, TRANSFER_NEW_WEATHER));
                         showToast("update");
                     } else if (detector.isSwipeUp(e1, e2, velocityY)) {
-                        Log.d(TAG, "update " + QUESTION_TO_SERVECE + TRANSFER_NEW_WEATHER);
-                        showToast("Up Swipe");
+ //                       Log.d(TAG, "update " + QUESTION_TO_SERVECE + TRANSFER_NEW_WEATHER);
+                        showFragment(configureFragment);
+                        showToast("configure");
                     } else if (detector.isSwipeLeft(e1, e2, velocityX)) {
                         showFragment(forecastFragment);
                         showToast("Left Swipe");

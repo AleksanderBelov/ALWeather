@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/background_04"
     tools:context="com.alwh.alweather.UI.WeatherFragment">
 
     <LinearLayout
@@ -44,7 +43,7 @@
 
             <ImageView
                 android:id="@+id/weatherIconMain"
-                android:layout_width="150dp"
+                android:layout_width="238dp"
                 android:layout_height="150dp"
                 android:layout_gravity="left"
                 android:layout_marginTop="@dimen/_1sdp"

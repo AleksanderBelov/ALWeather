@@ -33,6 +33,7 @@ public class AppRoot extends Application {
     public static final String QUESTION_TO_SERVECE = "key";
     public static final String WEATHER = "weather";
     public static final String FORECAST = "forecast";
+    public static final String LOCATION_ERROR_MESSAGE = "Input field must be filled";
     public static final int TRANSFER_NEW_WEATHER = 1;
     public static final int TRANSFER_SAVE_WEATHER = 2;
     public static final int TRANSFER_NEW_FORECAST = 3;
