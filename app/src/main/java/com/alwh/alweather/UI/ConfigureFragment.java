@@ -1,26 +1,38 @@
 package com.alwh.alweather.UI;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.alwh.alweather.R;
 import com.alwh.alweather.adapters.CityListAdapter;
 import com.alwh.alweather.json.CityList;
 import com.alwh.alweather.json.forecast.City;
+import com.alwh.alweather.model.Gps;
+import com.alwh.alweather.model.GpsInfo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 
 
 import java.io.IOException;
@@ -32,9 +44,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+
 import com.google.gson.stream.JsonReader;
 
+import static android.content.Context.LOCATION_SERVICE;
 import static com.alwh.alweather.helpers.AppRoot.LOCATION_ERROR_MESSAGE;
+import static com.alwh.alweather.helpers.AppRoot.MAX_CITY_COUNT;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,11 +70,18 @@ public class ConfigureFragment extends Fragment {
     private static List<CityList> mData;
     private CityListAdapter cityListAdapter;
     private List<CityList> allCityList;
+    private ProgressDialog mProgress;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private View configureFragmentView;
+    private Gps gps;
+
+    private LocationManager locationManager;
+
+    StringBuilder sbGPS = new StringBuilder();
+    StringBuilder sbNet = new StringBuilder();
 
 
     public ConfigureFragment() {
@@ -95,49 +120,108 @@ public class ConfigureFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         configureFragmentView = inflater.inflate(R.layout.fragment_configure, container, false);
-        addLocation = (AutoCompleteTextView) configureFragmentView.findViewById(R.id.new_location);
+  //      locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
 
-        dataSourceCity = new DataSourceCity();
-        dataSourceCity.execute();
+        addLocation = (AutoCompleteTextView) configureFragmentView.findViewById(R.id.new_location);
+        addLocation.setText("Kiev, UA");
+        addLocation.setEnabled(false);
+
+        String[] period = {"5 min", "10 min", "30 min", "1 hour", "2 hour", "manual"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, period);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner spinnerW = (Spinner) configureFragmentView.findViewById(R.id.spinnerW);
+        spinnerW.setAdapter(adapter);
+        spinnerW.setSelection(2);
+        // устанавливаем обработчик нажатия
+        spinnerW.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                Log.d(TAG, "Position = " + position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+
+
+
+        Spinner spinnerF = (Spinner) configureFragmentView.findViewById(R.id.spinnerF);
+        spinnerF.setAdapter(adapter);
+        spinnerF.setPrompt("Title");
+        spinnerF.setSelection(2);
+        // устанавливаем обработчик нажатия
+        spinnerF.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                Log.d(TAG, "Position = " + position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+
+
+
 
         final Button addLocationButton = (Button) configureFragmentView.findViewById(R.id.add_location_button);
         addLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                dataSourceCity = new DataSourceCity();
+                dataSourceCity.execute();
+
                 String enteredLocation = addLocation.getText().toString();
+                Log.d(TAG,enteredLocation);
                 if (TextUtils.isEmpty(enteredLocation)) {
                     Toast.makeText(getActivity(), LOCATION_ERROR_MESSAGE, Toast.LENGTH_LONG).show();
-
-
-
                     return;
                 }
-                // add this to the database
-/*                int numOfLocationsStored = databaseQuery.countAllStoredLocations();
-                Toast.makeText(AddLocationActivity.this, "Total count " + numOfLocationsStored, Toast.LENGTH_LONG).show();
-                if(numOfLocationsStored <= 3){
-                    databaseQuery.insertNewLocation(enteredLocation);
-                }else{
-                    Toast.makeText(AddLocationActivity.this, getString(R.string.stored_location), Toast.LENGTH_LONG).show();
-                }
-                Intent listLocationIntent = new Intent(AddLocationActivity.this, ListLocationActivity.class);
-                startActivity(listLocationIntent);
-  */
             }
         });
+        final Button gpsLocationButton = (Button) configureFragmentView.findViewById(R.id.gps_location_button);
+        gpsLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                GpsInfo gpsInfo = new GpsInfo(getActivity());
+                gps = gpsInfo.getGps();
+                addLocation.setText(gps.toString());
+
+                }
+        });
+
 
 
         return configureFragmentView;
 
     }
 
-    private class DataSourceCity extends AsyncTask<Void, Void, List<CityList>> {
-        protected void onProgressUpdate() {
+    private class DataSourceCity extends AsyncTask<Void, Integer, List<CityList>> {
+        @Override
+        protected void onProgressUpdate(Integer... progress) {
+            super.onProgressUpdate(progress);
+            mProgress.setProgress(progress[0]);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            mProgress = new ProgressDialog(getActivity());
+            mProgress.setTitle("city list");
+            mProgress.setMessage("loading...");
+            mProgress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgress.setMax(MAX_CITY_COUNT);
+            mProgress.show();
         }
 
         protected void onPostExecute(List<CityList> result) {
             if (null != result) {
-                mData = result;
+                mProgress.dismiss();
+                addLocation.setText("");
+                addLocation.setEnabled(true);
+                mData = allCityList;
                 cityListAdapter = new CityListAdapter(getActivity(), R.layout.city_list, mData);
                 addLocation.setAdapter(cityListAdapter);
                 addLocation.setThreshold(1);
@@ -146,77 +230,43 @@ public class ConfigureFragment extends Fragment {
 
         @Override
         protected List<CityList> doInBackground(Void... voids) {
-            readStream();
+            //        allCityList = readStream();
+            AssetManager mgr = getActivity().getAssets();
+            String filename;
+            InputStream stream = null;
+            JsonReader reader;
+            try {
+                filename = "city.list.json";
+                stream = mgr.open(filename, AssetManager.ACCESS_BUFFER);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            allCityList = new ArrayList<>();
+            try {
+                reader = new JsonReader(new InputStreamReader(stream, "UTF-8"));
+                Gson gson = new GsonBuilder().create();
+                reader.beginArray();
+                int i = 1;
+                while (reader.hasNext()) {
+                    CityList message = gson.fromJson(reader, CityList.class);
+                    allCityList.add(message);
+                    publishProgress(++i);
+                }
+                reader.endArray();
+                Log.d(TAG, "sitycount = " + allCityList.size());
+                reader.close();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (IOException ex) {
+            }
+            Collections.sort(allCityList, new Comparator<CityList>() {
+                @Override
+                public int compare(CityList listJsonObject, CityList nextListJsonObject) {
+                    return listJsonObject.getName().compareToIgnoreCase(nextListJsonObject.getName());
+                }
+            });
             ArrayList<CityList> list = new ArrayList<CityList>();
-
             return list;
         }
     }
-
-/*    @Override
-    protected void onResume() {
-        super.onResume();
-        if (null == mData) {
-            dataSourceCity = new DataSourceCity();
-            dataSourceCity.execute();
-        }
-    }*/
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (null == mData) {
-            dataSourceCity = new DataSourceCity();
-            dataSourceCity.execute();
-        }
-    }
-
-    public List<CityList> readStream() {
-
-        AssetManager mgr = getActivity().getAssets();
-        String filename = null;
-        InputStream stream = null;
-        try {
-            filename = "city.list.json";
-            //     System.out.println("filename : " + filename);
-            stream = mgr.open(filename, AssetManager.ACCESS_BUFFER);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        JsonReader reader = null;
-        List<CityList> messages = new ArrayList<>();
-        try {
-            reader = new JsonReader(new InputStreamReader(stream, "UTF-8"));
-               Gson gson = new GsonBuilder().create();
-
-         reader.beginArray();
-            while (reader.hasNext()) {
-
-                CityList message = gson.fromJson(reader, CityList.class);
-                messages.add(message);
-
-                Log.d(TAG, message.getName());
-            }
-
-
-            reader.endArray();
-            reader.close();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException ex) {
-        }
-        Collections.sort(messages, new Comparator<CityList>() {
-            @Override
-            public int compare(CityList listJsonObject, CityList nextListJsonObject) {
-                return listJsonObject.getName().compareToIgnoreCase(nextListJsonObject.getName());
-            }
-        });
-
-        return messages;
-
-    }
-
-
 }

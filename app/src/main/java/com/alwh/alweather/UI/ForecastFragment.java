@@ -41,6 +41,7 @@ public class ForecastFragment extends Fragment {
     Context _context;
 
 
+
     private String mParam1;
     private String mParam2;
 

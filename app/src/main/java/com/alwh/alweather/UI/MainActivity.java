@@ -166,6 +166,7 @@ public class MainActivity extends Activity {
                         showToast("update");
                     } else if (detector.isSwipeUp(e1, e2, velocityY)) {
  //                       Log.d(TAG, "update " + QUESTION_TO_SERVECE + TRANSFER_NEW_WEATHER);
+
                         showFragment(configureFragment);
                         showToast("configure");
                     } else if (detector.isSwipeLeft(e1, e2, velocityX)) {
