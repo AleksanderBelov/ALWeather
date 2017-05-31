@@ -61,6 +61,7 @@ public class MainActivity extends Activity {
         context = this;
 
 
+//        EventBus.getDefault().register(this);
         startService(new Intent(this, AlWeatherService.class).
                 putExtra(QUESTION_TO_SERVECE, TRANSFER_SAVE_WEATHER));
 
@@ -73,7 +74,7 @@ public class MainActivity extends Activity {
         forecastFragment = new ForecastFragment();
         configureFragment = new ConfigureFragment();
 
-        EventBus.getDefault().register(this);
+
 
 
 
@@ -109,24 +110,11 @@ public class MainActivity extends Activity {
         registerReceiver(br, intFilt);
     }
 
-    @Subscribe
-    public void onEvent(SelectShow event) {
-
-        if (event.selectShow == 2) {
-
-            showFragment(forecastFragment);
-            EventBus.getDefault().post(new MessageEvent(sqLiteForecastData));
-
-        } else {
-            showFragment(weatherFragment);
-        }
-    }
-
     private void showFragment(Fragment fragment) {
         FragmentManager fragmentManager = MainActivity.this.getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        //   fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.setCustomAnimations(R.animator.slide_in_left, R.animator.slide_in_right);
+           fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        //fragmentTransaction.setCustomAnimations(R.animator.slide_in_left, R.animator.slide_in_right);
 
         fragmentTransaction
                 .replace(R.id.frame_conteiner, fragment)
@@ -170,6 +158,7 @@ public class MainActivity extends Activity {
                         showFragment(configureFragment);
                         showToast("configure");
                     } else if (detector.isSwipeLeft(e1, e2, velocityX)) {
+                        EventBus.getDefault().post(new MessageEvent(sqLiteForecastData));
                         showFragment(forecastFragment);
                         showToast("Left Swipe");
                     } else if (detector.isSwipeRight(e1, e2, velocityX)) {

@@ -17,6 +17,7 @@ public class SQLiteForecastItem  extends SugarRecord {
     private String country;
     private double coordLon;
     private double coordLat;
+    private int weatherID;
     private String weatherMain;
     private String weatherDescription;
     private String weatherIcon;
@@ -29,8 +30,6 @@ public class SQLiteForecastItem  extends SugarRecord {
     private double rain;
     private double snow;
     private Date dt;
-
-    //String result = new java.text.SimpleDateFormat("HH:mm").format(new Date(unixTime * 1000));
 
 
     public SQLiteForecastItem() {
@@ -160,10 +159,21 @@ public class SQLiteForecastItem  extends SugarRecord {
     public Date getDt() {
         return dt;
     }
-
     public void setDt(int dtUnix) {
 
         this.dt = unixDateToDate(dtUnix);
+    }
+    public void setDt(Date date) {
+
+        this.dt = date;
+    }
+
+    public int getWeatherID() {
+        return weatherID;
+    }
+
+    public void setWeatherID(int weatherID) {
+        this.weatherID = weatherID;
     }
 
     private Date unixDateToDate(int unixDate){

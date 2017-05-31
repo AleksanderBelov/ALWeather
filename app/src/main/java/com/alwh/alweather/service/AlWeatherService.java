@@ -70,12 +70,8 @@ public class AlWeatherService extends Service {
         Log.d(TAG, "onStartCommand");
 
         if (!(intent.getExtras() == null)) {
-
             Log.d(TAG, "get: " + intent.getIntExtra(QUESTION_TO_SERVECE, 0));
-
             SelectetTransfer(intent.getIntExtra(QUESTION_TO_SERVECE, 0));
-
-
         }
 
         return super.onStartCommand(intent, flags, startId);

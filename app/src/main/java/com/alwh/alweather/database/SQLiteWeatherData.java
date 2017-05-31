@@ -24,6 +24,7 @@ public class SQLiteWeatherData extends SugarRecord {
     private String country;
     private double coordLon;
     private double coordLat;
+    private int weatherID;
     private String weatherMain;
     private String weatherDescription;
     private String weatherIcon;
@@ -51,6 +52,7 @@ public class SQLiteWeatherData extends SugarRecord {
         setCoordLon(jsonWeatherData.getCoord().getLon());
         setCoordLat(jsonWeatherData.getCoord().getLat());
         setWeatherMain(jsonWeatherData.getWeather().get(0).getMain());
+        setWeatherID(jsonWeatherData.getWeather().get(0).getId());
         setWeatherDescription(jsonWeatherData.getWeather().get(0).getDescription());
         setWeatherIcon(jsonWeatherData.getWeather().get(0).getIcon());
         setTemperature(jsonWeatherData.getMain().getTemp());
@@ -79,7 +81,8 @@ public class SQLiteWeatherData extends SugarRecord {
         } else {
             setSnow(0);
         }
-        setDt(jsonWeatherData.getDt());
+  //      setDt(jsonWeatherData.getDt());
+        setDt(new Date());
         setSunrise(jsonWeatherData.getSys().getSunrise());
         setSunset(jsonWeatherData.getSys().getSunset());
     }
@@ -216,6 +219,10 @@ public class SQLiteWeatherData extends SugarRecord {
 
         this.dt = unixDateToDate(dtUnix);
     }
+    public void setDt(Date date) {
+
+        this.dt = date;
+    }
 
     public Date getSunrise() {
         return sunrise;
@@ -242,5 +249,13 @@ public class SQLiteWeatherData extends SugarRecord {
     @Override
     public void setId(Long id) {
         super.setId(id);
+    }
+
+    public int getWeatherID() {
+        return weatherID;
+    }
+
+    public void setWeatherID(int weatherID) {
+        this.weatherID = weatherID;
     }
 }

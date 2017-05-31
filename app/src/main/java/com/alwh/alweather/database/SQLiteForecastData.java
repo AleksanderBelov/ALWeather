@@ -31,6 +31,7 @@ public class SQLiteForecastData {
             sqLiteForecastItem.setCountry(jsonForecastData.getCity().getCountry());
             sqLiteForecastItem.setCoordLon(jsonForecastData.getCity().getCoord().getLon());
             sqLiteForecastItem.setCoordLat(jsonForecastData.getCity().getCoord().getLat());
+            sqLiteForecastItem.setWeatherID(jsonForecastData.getList().get(i).getWeather().get(0).getId());
             sqLiteForecastItem.setWeatherMain(jsonForecastData.getList().get(i).getWeather().get(0).getMain());
             sqLiteForecastItem.setWeatherDescription(jsonForecastData.getList().get(i).getWeather().get(0).getDescription());
             sqLiteForecastItem.setWeatherIcon(jsonForecastData.getList().get(i).getWeather().get(0).getIcon());

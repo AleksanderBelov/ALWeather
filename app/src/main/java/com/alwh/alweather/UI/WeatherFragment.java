@@ -175,6 +175,7 @@ public class WeatherFragment extends Fragment {
 
     public void initData(SQLiteWeatherData sqLiteWeatherData) {
 
+
         Log.d(TAG, "initData");
         temperatureMain.setText("" + (int)sqLiteWeatherData.getTemperature() + (char)176 + "C");
         cityName.setText(sqLiteWeatherData.getCityName() + ", " + sqLiteWeatherData.getCountry());

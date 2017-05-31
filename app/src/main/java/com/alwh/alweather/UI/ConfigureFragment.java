@@ -1,15 +1,9 @@
 package com.alwh.alweather.UI;
-
-
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.res.AssetManager;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.os.Handler;
-import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,38 +13,27 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.alwh.alweather.R;
 import com.alwh.alweather.adapters.CityListAdapter;
+import com.alwh.alweather.database.SQLiteAlWeatherConfig;
 import com.alwh.alweather.json.CityList;
-import com.alwh.alweather.json.forecast.City;
-import com.alwh.alweather.model.Gps;
+import com.alwh.alweather.json.weather.Coord;
 import com.alwh.alweather.model.GpsInfo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 
 import com.google.gson.stream.JsonReader;
 
-import static android.content.Context.LOCATION_SERVICE;
 import static com.alwh.alweather.helpers.AppRoot.LOCATION_ERROR_MESSAGE;
 import static com.alwh.alweather.helpers.AppRoot.MAX_CITY_COUNT;
 
@@ -71,17 +54,14 @@ public class ConfigureFragment extends Fragment {
     private CityListAdapter cityListAdapter;
     private List<CityList> allCityList;
     private ProgressDialog mProgress;
+    private SQLiteAlWeatherConfig sqLiteAlWeatherConfig;
+    private Spinner spinnerF;
+    private Spinner spinnerW;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private View configureFragmentView;
-    private Gps gps;
-
-    private LocationManager locationManager;
-
-    StringBuilder sbGPS = new StringBuilder();
-    StringBuilder sbNet = new StringBuilder();
 
 
     public ConfigureFragment() {
@@ -118,10 +98,8 @@ public class ConfigureFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        configureFragmentView = inflater.inflate(R.layout.fragment_configure, container, false);
-  //      locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
 
+        configureFragmentView = inflater.inflate(R.layout.fragment_configure, container, false);
         addLocation = (AutoCompleteTextView) configureFragmentView.findViewById(R.id.new_location);
         addLocation.setText("Kiev, UA");
         addLocation.setEnabled(false);
@@ -129,10 +107,10 @@ public class ConfigureFragment extends Fragment {
         String[] period = {"5 min", "10 min", "30 min", "1 hour", "2 hour", "manual"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, period);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner spinnerW = (Spinner) configureFragmentView.findViewById(R.id.spinnerW);
+        spinnerW = (Spinner) configureFragmentView.findViewById(R.id.spinnerW);
         spinnerW.setAdapter(adapter);
         spinnerW.setSelection(2);
-        // устанавливаем обработчик нажатия
+
         spinnerW.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
@@ -146,11 +124,10 @@ public class ConfigureFragment extends Fragment {
 
 
 
-        Spinner spinnerF = (Spinner) configureFragmentView.findViewById(R.id.spinnerF);
+        spinnerF = (Spinner) configureFragmentView.findViewById(R.id.spinnerF);
         spinnerF.setAdapter(adapter);
         spinnerF.setPrompt("Title");
         spinnerF.setSelection(2);
-        // устанавливаем обработчик нажатия
         spinnerF.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
@@ -161,6 +138,8 @@ public class ConfigureFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+
+        initConfig();
 
 
 
@@ -187,10 +166,24 @@ public class ConfigureFragment extends Fragment {
             public void onClick(View view) {
 
                 GpsInfo gpsInfo = new GpsInfo(getActivity());
-                gps = gpsInfo.getGps();
-                addLocation.setText(gps.toString());
-
+                Coord location = gpsInfo.getLocation();
+                addLocation.setText(location.getLat() + "," + location.getLon());
                 }
+        });
+
+        final Button saveConfigButton = (Button) configureFragmentView.findViewById(R.id.saveConfig);
+        gpsLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                SQLiteAlWeatherConfig sqLiteAlWeatherConfig = new SQLiteAlWeatherConfig(addLocation.getText().toString(), 300000, 3000000, 27.911619, -33.015289);
+                sqLiteAlWeatherConfig.setId((long) 1);
+                sqLiteAlWeatherConfig.save();
+
+                GpsInfo gpsInfo = new GpsInfo(getActivity());
+                Coord location = gpsInfo.getLocation();
+                addLocation.setText(location.getLat() + "," + location.getLon());
+            }
         });
 
 
@@ -268,5 +261,21 @@ public class ConfigureFragment extends Fragment {
             ArrayList<CityList> list = new ArrayList<CityList>();
             return list;
         }
+    }
+
+    private void initConfig(){
+        sqLiteAlWeatherConfig = new SQLiteAlWeatherConfig();
+        this.sqLiteAlWeatherConfig = SQLiteAlWeatherConfig.findById(SQLiteAlWeatherConfig.class, 1);
+        if (this.sqLiteAlWeatherConfig == null) {
+            addLocation.setText(sqLiteAlWeatherConfig.getCity());
+            spinnerW.setSelection(2,true);
+            spinnerW.setSelection(3,true);
+        }
+
+
+
+
+
+
     }
 }

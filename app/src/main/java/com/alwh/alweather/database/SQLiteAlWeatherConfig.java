@@ -8,6 +8,8 @@ import com.orm.SugarRecord;
 
 public class SQLiteAlWeatherConfig extends SugarRecord{
     String city;
+    double latitude;
+    double longitude;
     int intervalWeather;
     int intervalForecast;
 
@@ -24,10 +26,12 @@ public class SQLiteAlWeatherConfig extends SugarRecord{
         this.city = city;
     }
 
-    public SQLiteAlWeatherConfig(String city, int intervalWeather, int intervalForecast) {
+    public SQLiteAlWeatherConfig(String city, int intervalWeather, int intervalForecast, double latitude, double longitude) {
         this.city = city;
         this.intervalWeather = intervalWeather;
         this.intervalForecast = intervalForecast;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public String getCity() {
@@ -52,6 +56,22 @@ public class SQLiteAlWeatherConfig extends SugarRecord{
 
     public void setIntervalForecast(int intervalForecast) {
         this.intervalForecast = intervalForecast;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }
 
