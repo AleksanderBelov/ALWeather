@@ -1,6 +1,7 @@
 package com.alwh.alweather.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
+        holder.cardView.setCardBackgroundColor(128);
+
         Picasso.with(context)
  //               .load("http://openweathermap.org/img/w/" + sqLiteForecastData.getForecast().get(position).getWeatherIcon() + ".png")
                 .load(ConvertData.getIconWeatherL(sqLiteForecastData.getForecast().get(position).getWeatherIcon(),context))
@@ -70,10 +73,12 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
         TextView dayTemp;
         TextView windDegInfo;
         TextView windSpeedInfo;
+        CardView cardView;
 
 
         public ViewHolder(View v) {
             super(v);
+            cardView = (CardView) v.findViewById(R.id.card_view);
             weatherIcon = (ImageView) v.findViewById(R.id.weatherIcon);
             day = (TextView) v.findViewById(R.id.day);
             dayTemp = (TextView) v.findViewById(R.id.dayTemp);

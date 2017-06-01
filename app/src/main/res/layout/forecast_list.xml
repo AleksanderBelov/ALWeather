@@ -43,6 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
+                android:textColor="@color/colorWhite"
                 android:textAlignment="center"
                 android:layout_gravity="left"/>
             <TextView
@@ -50,6 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
+                android:textColor="@color/colorWhite"
                 android:textAlignment="center"
                 android:layout_gravity="right"/>
             </LinearLayout>
@@ -61,12 +63,14 @@
             <TextView
                 android:id="@+id/weatherInfo"
                 android:layout_width="match_parent"
+                android:textColor="@color/colorWhite"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textAlignment="center" />
                 <TextView
                     android:id="@+id/pressureInfo"
                     android:layout_width="match_parent"
+                    android:textColor="@color/colorWhite"
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     android:textAlignment="center" />
@@ -74,6 +78,7 @@
                     android:id="@+id/humidityInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
                     android:text=""
                     android:textAlignment="center" />
             </LinearLayout>
@@ -86,12 +91,14 @@
                     android:id="@+id/wind_deg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
                     android:text="TextView"
                     android:textAlignment="center" />
                 <TextView
                     android:id="@+id/wind_speed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
                     android:text="TextView"
                     android:textAlignment="center" />
             </LinearLayout>
