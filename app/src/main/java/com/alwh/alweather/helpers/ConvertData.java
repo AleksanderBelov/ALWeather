@@ -7,6 +7,8 @@ package com.alwh.alweather.helpers;
 import android.content.Context;
 import android.media.Image;
 
+import com.alwh.alweather.R;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -58,5 +60,18 @@ public class ConvertData {
 
         return info;
     }
-
+    public static String getTextWeather(int weatherID, Context context){
+        String s =  context.getResources()
+                .getString(context
+                        .getResources()
+                        .getIdentifier("w" + weatherID, "string", context.getPackageName()));
+        return s;
+    }
+    public static String getTextWeather(String key, Context context){
+        String s =  context.getResources()
+                .getString(context
+                        .getResources()
+                        .getIdentifier(key, "string", context.getPackageName()));
+        return s;
+    }
 }

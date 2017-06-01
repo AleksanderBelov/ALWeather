@@ -33,6 +33,7 @@ import static com.alwh.alweather.helpers.AppRoot.PART_DAY;
 import static com.alwh.alweather.helpers.AppRoot.QUESTION_TO_SERVECE;
 import static com.alwh.alweather.helpers.AppRoot.TRANSFER_SAVE_FORECAST;
 import static com.alwh.alweather.helpers.AppRoot.TRANSFER_SAVE_WEATHER;
+import static com.alwh.alweather.helpers.ConvertData.getTextWeather;
 
 
 /**
@@ -191,7 +192,8 @@ public class WeatherFragment extends Fragment {
 
 
 //        weatherInformation.setText(getString(ConvertData.getWeatherInfo(sqLiteWeatherData.getWeatherDescription(),getActivity())) + " ");
-        weatherInformation.setText(sqLiteWeatherData.getWeatherDescription());
+  //      weatherInformation.setText(sqLiteWeatherData.getWeatherDescription());
+        weatherInformation.setText(getTextWeather(sqLiteWeatherData.getWeatherID(),getActivity()));
         atmosphericPressure.setText(getString(R.string.atmospheric_pressure) + " " + sqLiteWeatherData.getPressure());
         windDeg.setText(getString(R.string.wind) + " " + sqLiteWeatherData.getWindDeg());
         windSpeed.setText(getString(R.string.wind_speed) + " " + sqLiteWeatherData.getWindSpeed() + "km/h");

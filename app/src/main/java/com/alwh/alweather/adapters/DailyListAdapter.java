@@ -3,6 +3,7 @@ package com.alwh.alweather.adapters;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ public class DailyListAdapter extends RecyclerView.Adapter<DailyListAdapter.View
     private int weather;
 
     public DailyListAdapter(Context context, SQLiteForecastData sqLiteForecastData, int weather) {
+        Log.d("AlWeather/DLAd", "DailyListAdapter (constructor)");
         this.sqLiteForecastData = sqLiteForecastData;
         this.context = context;
         this.weather = weather;
@@ -40,20 +42,16 @@ public class DailyListAdapter extends RecyclerView.Adapter<DailyListAdapter.View
 
         SimpleDateFormat sdf = new SimpleDateFormat("E");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+3"));
+        Log.d("AlWeather/DLAd", position + "");
         holder.dayOfWeek.setText(sdf.format(sqLiteForecastData.getForecast().get(position).getDt()));
+
 
         sdf = new SimpleDateFormat("HH:");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+3"));
         String tt = sdf.format(sqLiteForecastData.getForecast().get(position).getDt()) + "00";
         holder.time.setText(tt);
 
-//String uri = "@drawable/l" + sqLiteForecastData.getForecast().get(position).getWeatherIcon();
-//      int icon = getResources().getIdentifier(uri, null, context.getPackageName());
-
-
-
-
-        int a = holder.weatherIcon.getWidth();
+  //      int a = holder.weatherIcon.getWidth();
 
         Picasso.with(context)
                 .load(ConvertData.getIconWeatherL(sqLiteForecastData.getForecast().get(position).getWeatherIcon(),context))

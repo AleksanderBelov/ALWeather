@@ -44,6 +44,7 @@ public class AppRoot extends Application {
     public static final int TRANSFER_SAVE_WEATHER = 2;
     public static final int TRANSFER_NEW_FORECAST = 3;
     public static final int TRANSFER_SAVE_FORECAST = 4;
+    public static final int CHANGE_CITY = 5;
     public static final int PART_DAY = 8;
     public static final int MAX_CITY_COUNT = 22635;
 
@@ -148,7 +149,6 @@ public class AppRoot extends Application {
 
             sqLiteForecastItem.save();
             forecast.add(sqLiteForecastItem);
-
 
         }
         SQLiteForecastData sqLiteForecastData = new SQLiteForecastData(forecast);

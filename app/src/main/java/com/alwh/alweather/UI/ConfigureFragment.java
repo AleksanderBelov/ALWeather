@@ -1,5 +1,6 @@
 package com.alwh.alweather.UI;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.alwh.alweather.database.SQLiteAlWeatherConfig;
 import com.alwh.alweather.json.CityList;
 import com.alwh.alweather.json.weather.Coord;
 import com.alwh.alweather.model.GpsInfo;
+import com.alwh.alweather.service.AlWeatherService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
@@ -34,8 +36,10 @@ import java.util.List;
 
 import com.google.gson.stream.JsonReader;
 
+import static com.alwh.alweather.helpers.AppRoot.CHANGE_CITY;
 import static com.alwh.alweather.helpers.AppRoot.LOCATION_ERROR_MESSAGE;
 import static com.alwh.alweather.helpers.AppRoot.MAX_CITY_COUNT;
+import static com.alwh.alweather.helpers.AppRoot.QUESTION_TO_SERVECE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,7 +69,6 @@ public class ConfigureFragment extends Fragment {
 
 
     public ConfigureFragment() {
-        // Required empty public constructor
     }
 
     /**
@@ -121,9 +124,6 @@ public class ConfigureFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
-
-
-
         spinnerF = (Spinner) configureFragmentView.findViewById(R.id.spinnerF);
         spinnerF.setAdapter(adapter);
         spinnerF.setPrompt("Title");
@@ -138,7 +138,6 @@ public class ConfigureFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
-
         initConfig();
 
 
@@ -172,7 +171,7 @@ public class ConfigureFragment extends Fragment {
         });
 
         final Button saveConfigButton = (Button) configureFragmentView.findViewById(R.id.saveConfig);
-        gpsLocationButton.setOnClickListener(new View.OnClickListener() {
+        saveConfigButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -180,10 +179,20 @@ public class ConfigureFragment extends Fragment {
                 sqLiteAlWeatherConfig.setId((long) 1);
                 sqLiteAlWeatherConfig.save();
 
-                GpsInfo gpsInfo = new GpsInfo(getActivity());
-                Coord location = gpsInfo.getLocation();
-                addLocation.setText(location.getLat() + "," + location.getLon());
+                if (allCityList != null){
+                    allCityList = null;
+                }
+
+                getActivity()
+                        .startService(new Intent(getActivity(), AlWeatherService.class).
+                                putExtra(QUESTION_TO_SERVECE, CHANGE_CITY));
+
+                getActivity().getFragmentManager().popBackStack();
+
             }
+
+
+
         });
 
 
@@ -271,11 +280,5 @@ public class ConfigureFragment extends Fragment {
             spinnerW.setSelection(2,true);
             spinnerW.setSelection(3,true);
         }
-
-
-
-
-
-
     }
 }

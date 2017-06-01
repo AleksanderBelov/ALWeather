@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/botton_border"
+            android:imeOptions="actionDone"
             android:hint="@string/location_hints"
             android:inputType="textPersonName"
             android:maxLines="1"
@@ -105,7 +106,7 @@
             android:layout_marginTop="@dimen/_16sdp"
             android:background="@color/colorBackground"
             android:padding="@dimen/_12sdp"
-            android:text="@string/gps_location"
+            android:text="@string/save_button"
             android:textColor="@color/colorWhite" />
     </LinearLayout>
 

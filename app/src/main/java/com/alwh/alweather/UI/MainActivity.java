@@ -53,7 +53,6 @@ public class MainActivity extends Activity {
     private GestureDetector gestureDetector;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,12 +74,7 @@ public class MainActivity extends Activity {
         configureFragment = new ConfigureFragment();
 
 
-
-
-
-
         gestureDetector = initGestureDetector();
-
 
 
         showFragment(weatherFragment);
@@ -113,7 +107,7 @@ public class MainActivity extends Activity {
     private void showFragment(Fragment fragment) {
         FragmentManager fragmentManager = MainActivity.this.getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-           fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         //fragmentTransaction.setCustomAnimations(R.animator.slide_in_left, R.animator.slide_in_right);
 
         fragmentTransaction
@@ -128,10 +122,6 @@ public class MainActivity extends Activity {
         super.onDestroy();
 
     }
-
-  //  public boolean onTouchEvent(MotionEvent event) {
-  //      return gestureDetector.onTouchEvent(event);
-//    }
 
 
     public boolean dispatchTouchEvent(MotionEvent event) {
@@ -149,24 +139,19 @@ public class MainActivity extends Activity {
                                    float velocityY) {
                 try {
                     if (detector.isSwipeDown(e1, e2, velocityY)) {
-                        startService(new Intent(context, AlWeatherService.class).
-                                putExtra(QUESTION_TO_SERVECE, TRANSFER_NEW_WEATHER));
-                        showToast("update");
+                        downSwipe();
+                 //       showToast("update");
                     } else if (detector.isSwipeUp(e1, e2, velocityY)) {
- //                       Log.d(TAG, "update " + QUESTION_TO_SERVECE + TRANSFER_NEW_WEATHER);
+                        downSwipe();
+                  //      showToast("update");
 
-                        showFragment(configureFragment);
-                        showToast("configure");
                     } else if (detector.isSwipeLeft(e1, e2, velocityX)) {
-                        EventBus.getDefault().post(new MessageEvent(sqLiteForecastData));
-                        showFragment(forecastFragment);
-                        showToast("Left Swipe");
+                        leftSwipe();
                     } else if (detector.isSwipeRight(e1, e2, velocityX)) {
-                        showFragment(weatherFragment);
-                        showToast("Right Swipe");
+                        rightSwipe();
                     }
                 } catch (Exception e) {
-                } //for now, ignore
+                }
                 return false;
             }
 
@@ -175,10 +160,45 @@ public class MainActivity extends Activity {
             }
         });
     }
+
+    public void rightSwipe() {
+        Fragment f = getFragmentManager().findFragmentById(R.id.frame_conteiner);
+        if (f instanceof ForecastFragment) {
+            showFragment(weatherFragment);
+        }
+        if (f instanceof WeatherFragment)
+            showFragment(configureFragment);
+    }
+
+    public void leftSwipe() {
+        Fragment f = getFragmentManager().findFragmentById(R.id.frame_conteiner);
+        if (f instanceof WeatherFragment) {
+            showFragment(forecastFragment);
+        }
+        if (f instanceof ConfigureFragment)
+            showFragment(weatherFragment);
+    }
+
+    public void downSwipe() {
+        Fragment f = getFragmentManager().findFragmentById(R.id.frame_conteiner);
+        if (!(f instanceof ForecastFragment)) {
+            Toast.makeText(getApplicationContext(), "update", Toast.LENGTH_SHORT).show();
+            startService(new Intent(context, AlWeatherService.class).
+                    putExtra(QUESTION_TO_SERVECE, TRANSFER_NEW_WEATHER));
+
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Fragment f = getFragmentManager().findFragmentById(R.id.frame_conteiner);
+        super.onBackPressed();
+
+        if (f instanceof WeatherFragment) {
+            super.finish();
+        } else {
+            showFragment(weatherFragment);
+        }
+    }
 }
-
-
-
-
-
-

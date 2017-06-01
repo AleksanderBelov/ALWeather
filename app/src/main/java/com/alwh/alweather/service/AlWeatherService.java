@@ -13,6 +13,7 @@ import org.parceler.Parcels;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.alwh.alweather.helpers.AppRoot.CHANGE_CITY;
 import static com.alwh.alweather.helpers.AppRoot.FORECAST;
 import static com.alwh.alweather.helpers.AppRoot.NEW_WEATHER;
 import static com.alwh.alweather.helpers.AppRoot.TRANSFER_NEW_WEATHER;
@@ -61,8 +62,10 @@ public class AlWeatherService extends Service {
         return super.onUnbind(intent);
     }
 
-    public void reloadConfig() {
+    public void ReloadConfig() {
         this.sqLiteAlWeatherConfig = SQLiteAlWeatherConfig.findById(SQLiteAlWeatherConfig.class, 1);
+        TransferWeather(true);
+        TransferForecast(true);
     }
 
     @Override
@@ -162,6 +165,9 @@ SQLiteForecastData SQLiteForecastData;
                 break;
             case TRANSFER_SAVE_FORECAST:
                 TransferForecast(false);
+                break;
+            case CHANGE_CITY:
+                ReloadConfig();
                 break;
 
         }

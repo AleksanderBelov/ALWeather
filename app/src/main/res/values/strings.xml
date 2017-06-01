@@ -3,8 +3,8 @@
     <string name="city_country">Enugu, Nigeria</string>
     <string name="date_today">Friday, 8 July</string>
     <string name="current_temperature">26</string>
-    <string name="weather_information">Partly Cloud</string>
-    <string name="temp_information">partly cloudy</string>
+    <string name="weather_information"></string>
+    <string name="temp_information"></string>
 
     <string name="wind">wind: </string>
     <string name="wind_deg">18 km/h</string>
@@ -25,11 +25,12 @@
     <string name="sunset_time">73%</string>
 
     <string name="day_of_week">Mon</string>
-    <string name="location_hints">Type city or postcode</string>
+    <string name="location_hints">Type city name</string>
     <string name="location_example">Example Malmo, Sweden</string>
     <string name="add_new_location">Add new location</string>
     <string name="gps_location">use GPS</string>
     <string name="stored_location">You can only store 5 locations</string>
+    <string name="save_button">SAVE</string>
     <string name="permission_notice">This permission is important but you can as well set your location on Location page</string>
     <string name="go_to_location">Go to location setting</string>
     <string name="digit_font">fonts/dsdigib.ttf</string>
