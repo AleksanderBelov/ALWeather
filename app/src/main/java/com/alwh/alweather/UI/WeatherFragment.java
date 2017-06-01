@@ -195,7 +195,7 @@ public class WeatherFragment extends Fragment {
   //      weatherInformation.setText(sqLiteWeatherData.getWeatherDescription());
         weatherInformation.setText(getTextWeather(sqLiteWeatherData.getWeatherID(),getActivity()));
         atmosphericPressure.setText(getString(R.string.atmospheric_pressure) + " " + sqLiteWeatherData.getPressure());
-        windDeg.setText(getString(R.string.wind) + " " + sqLiteWeatherData.getWindDeg());
+        windDeg.setText(getString(R.string.wind) + " " + sqLiteWeatherData.getWindDeg() + "°");
         windSpeed.setText(getString(R.string.wind_speed) + " " + sqLiteWeatherData.getWindSpeed() + "km/h");
         humidity.setText(getString(R.string.humidity) + " " + sqLiteWeatherData.getHumidity() + "%");
         sunrise.setText(getString(R.string.sunrise) + " " + ConvertData.getTime(sqLiteWeatherData.getSunrise()));

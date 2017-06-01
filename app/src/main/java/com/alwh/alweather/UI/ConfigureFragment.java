@@ -187,7 +187,8 @@ public class ConfigureFragment extends Fragment {
                         .startService(new Intent(getActivity(), AlWeatherService.class).
                                 putExtra(QUESTION_TO_SERVECE, CHANGE_CITY));
 
-                getActivity().getFragmentManager().popBackStack();
+             //   getActivity().getFragmentManager().popBackStack();
+                Toast.makeText(getActivity(), "configure saved", Toast.LENGTH_SHORT).show();
 
             }
 

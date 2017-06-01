@@ -13,6 +13,8 @@ import com.alwh.alweather.database.SQLiteForecastData;
 import com.alwh.alweather.helpers.ConvertData;
 import com.squareup.picasso.Picasso;
 
+import static com.alwh.alweather.helpers.ConvertData.getTextWeather;
+
 
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHolder> {
 
@@ -43,8 +45,11 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
                 .into(holder.weatherIcon);
 
         holder.day.setText(ConvertData.getStandartDate(sqLiteForecastData.getForecast().get(position).getDt()));
-        holder.weatherInfo.setText("temp: " + String.valueOf(Math.round(sqLiteForecastData.getForecast().get(position).getTemperature())) + "°");
-        holder.pressureInfo.setText("    pressure: " + sqLiteForecastData.getForecast().get(position).getPressure() + "hPa");
+        holder.dayTemp.setText("    temp: " + String.valueOf(Math.round(sqLiteForecastData.getForecast().get(position).getTemperature())) + "°");
+        holder.weatherInfo.setText(getTextWeather(sqLiteForecastData.getForecast().get(position).getWeatherID(),context));
+        holder.pressureInfo.setText("    pressure: " + sqLiteForecastData.getForecast().get(position).getPressure() + " hPa");
+        holder.windDegInfo.setText("wind (deg): " + (int)sqLiteForecastData.getForecast().get(position).getWindDeg());
+        holder.windSpeedInfo.setText("    wind (speed): " + sqLiteForecastData.getForecast().get(position).getWindSpeed() + " km/s");
         //       holder.humidityInfo.setText("h: " + String.valueOf(Math.round(sqLiteForecastData.getForecast().get(position).getTemperature())) + "%");
     }
 
@@ -62,15 +67,22 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
         TextView weatherInfo;
         TextView pressureInfo;
         TextView humidityInfo;
+        TextView dayTemp;
+        TextView windDegInfo;
+        TextView windSpeedInfo;
 
 
         public ViewHolder(View v) {
             super(v);
             weatherIcon = (ImageView) v.findViewById(R.id.weatherIcon);
             day = (TextView) v.findViewById(R.id.day);
+            dayTemp = (TextView) v.findViewById(R.id.dayTemp);
             weatherInfo = (TextView) v.findViewById(R.id.weatherInfo);
             pressureInfo = (TextView) v.findViewById(R.id.pressureInfo);
             humidityInfo = (TextView) v.findViewById(R.id.humidityInfo);
+            windDegInfo = (TextView) v.findViewById(R.id.wind_deg);
+            windSpeedInfo = (TextView) v.findViewById(R.id.wind_speed);
+
 
         }
     }

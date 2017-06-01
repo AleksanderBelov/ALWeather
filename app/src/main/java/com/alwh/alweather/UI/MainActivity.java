@@ -191,14 +191,19 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed() {
+        showFragment(weatherFragment);
 
-        Fragment f = getFragmentManager().findFragmentById(R.id.frame_conteiner);
+  /*     Fragment f = getFragmentManager().findFragmentById(R.id.frame_conteiner);
+
         super.onBackPressed();
+
 
         if (f instanceof WeatherFragment) {
             super.finish();
         } else {
             showFragment(weatherFragment);
         }
+        */
     }
+
 }
