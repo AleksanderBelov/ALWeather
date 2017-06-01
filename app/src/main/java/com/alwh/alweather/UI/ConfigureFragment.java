@@ -1,4 +1,5 @@
 package com.alwh.alweather.UI;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -16,6 +17,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import com.alwh.alweather.R;
 import com.alwh.alweather.adapters.CityListAdapter;
 import com.alwh.alweather.database.SQLiteAlWeatherConfig;
@@ -25,6 +27,7 @@ import com.alwh.alweather.model.GpsInfo;
 import com.alwh.alweather.service.AlWeatherService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -41,17 +44,9 @@ import static com.alwh.alweather.helpers.AppRoot.LOCATION_ERROR_MESSAGE;
 import static com.alwh.alweather.helpers.AppRoot.MAX_CITY_COUNT;
 import static com.alwh.alweather.helpers.AppRoot.QUESTION_TO_SERVECE;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ConfigureFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ConfigureFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final String TAG = "Configure";
     private AutoCompleteTextView addLocation;
     private DataSourceCity dataSourceCity;
     private static List<CityList> mData;
@@ -61,26 +56,14 @@ public class ConfigureFragment extends Fragment {
     private SQLiteAlWeatherConfig sqLiteAlWeatherConfig;
     private Spinner spinnerF;
     private Spinner spinnerW;
-
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private View configureFragmentView;
 
-
     public ConfigureFragment() {
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ConfigureFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ConfigureFragment newInstance(String param1, String param2) {
+/*       public static ConfigureFragment newInstance(String param1, String param2) {
         ConfigureFragment fragment = new ConfigureFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -88,6 +71,7 @@ public class ConfigureFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+    */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -106,20 +90,18 @@ public class ConfigureFragment extends Fragment {
         addLocation = (AutoCompleteTextView) configureFragmentView.findViewById(R.id.new_location);
         addLocation.setText("Kiev, UA");
         addLocation.setEnabled(false);
-
         String[] period = {"5 min", "10 min", "30 min", "1 hour", "2 hour", "manual"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, period);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerW = (Spinner) configureFragmentView.findViewById(R.id.spinnerW);
         spinnerW.setAdapter(adapter);
         spinnerW.setSelection(2);
-
         spinnerW.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
-                Log.d(TAG, "Position = " + position);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
             }
@@ -132,42 +114,36 @@ public class ConfigureFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
-                Log.d(TAG, "Position = " + position);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
         initConfig();
 
-
-
-
         final Button addLocationButton = (Button) configureFragmentView.findViewById(R.id.add_location_button);
         addLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 dataSourceCity = new DataSourceCity();
                 dataSourceCity.execute();
-
                 String enteredLocation = addLocation.getText().toString();
-                Log.d(TAG,enteredLocation);
                 if (TextUtils.isEmpty(enteredLocation)) {
                     Toast.makeText(getActivity(), LOCATION_ERROR_MESSAGE, Toast.LENGTH_LONG).show();
                     return;
                 }
             }
         });
+
         final Button gpsLocationButton = (Button) configureFragmentView.findViewById(R.id.gps_location_button);
         gpsLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 GpsInfo gpsInfo = new GpsInfo(getActivity());
                 Coord location = gpsInfo.getLocation();
                 addLocation.setText(location.getLat() + "," + location.getLon());
-                }
+            }
         });
 
         final Button saveConfigButton = (Button) configureFragmentView.findViewById(R.id.saveConfig);
@@ -178,28 +154,19 @@ public class ConfigureFragment extends Fragment {
                 SQLiteAlWeatherConfig sqLiteAlWeatherConfig = new SQLiteAlWeatherConfig(addLocation.getText().toString(), 300000, 3000000, 27.911619, -33.015289);
                 sqLiteAlWeatherConfig.setId((long) 1);
                 sqLiteAlWeatherConfig.save();
-
-                if (allCityList != null){
+                if (allCityList != null) {
                     allCityList = null;
                 }
 
                 getActivity()
                         .startService(new Intent(getActivity(), AlWeatherService.class).
                                 putExtra(QUESTION_TO_SERVECE, CHANGE_CITY));
-
-             //   getActivity().getFragmentManager().popBackStack();
                 Toast.makeText(getActivity(), "configure saved", Toast.LENGTH_SHORT).show();
-
             }
 
 
-
         });
-
-
-
         return configureFragmentView;
-
     }
 
     private class DataSourceCity extends AsyncTask<Void, Integer, List<CityList>> {
@@ -233,7 +200,6 @@ public class ConfigureFragment extends Fragment {
 
         @Override
         protected List<CityList> doInBackground(Void... voids) {
-            //        allCityList = readStream();
             AssetManager mgr = getActivity().getAssets();
             String filename;
             InputStream stream = null;
@@ -256,7 +222,6 @@ public class ConfigureFragment extends Fragment {
                     publishProgress(++i);
                 }
                 reader.endArray();
-                Log.d(TAG, "sitycount = " + allCityList.size());
                 reader.close();
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -273,13 +238,13 @@ public class ConfigureFragment extends Fragment {
         }
     }
 
-    private void initConfig(){
+    private void initConfig() {
         sqLiteAlWeatherConfig = new SQLiteAlWeatherConfig();
         this.sqLiteAlWeatherConfig = SQLiteAlWeatherConfig.findById(SQLiteAlWeatherConfig.class, 1);
         if (this.sqLiteAlWeatherConfig == null) {
             addLocation.setText(sqLiteAlWeatherConfig.getCity());
-            spinnerW.setSelection(2,true);
-            spinnerW.setSelection(3,true);
+            spinnerW.setSelection(2, true);
+            spinnerW.setSelection(3, true);
         }
     }
 }
