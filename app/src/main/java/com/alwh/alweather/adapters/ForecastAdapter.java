@@ -46,7 +46,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
         holder.dayTemp.setText("    temp: " + String.valueOf(Math.round(sqLiteForecastData.getForecast().get(position).getTemperature())) + "°");
         holder.weatherInfo.setText(getTextWeather(sqLiteForecastData.getForecast().get(position).getWeatherID(), context));
         holder.pressureInfo.setText("    pressure: " + sqLiteForecastData.getForecast().get(position).getPressure() + " hPa");
-        holder.windDegInfo.setText("wind (deg): " + (int) sqLiteForecastData.getForecast().get(position).getWindDeg());
+        holder.windDegInfo.setText("wind (deg): " + (int) sqLiteForecastData.getForecast().get(position).getWindDeg() + "°");
         holder.windSpeedInfo.setText("    wind (speed): " + sqLiteForecastData.getForecast().get(position).getWindSpeed() + " km/s");
     }
 

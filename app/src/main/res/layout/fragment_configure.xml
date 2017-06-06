@@ -17,8 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/botton_border"
-            android:imeOptions="actionDone"
             android:hint="@string/location_hints"
+            android:imeOptions="actionDone"
             android:inputType="textPersonName"
             android:maxLines="1"
             android:padding="@dimen/_12sdp"
@@ -35,23 +35,13 @@
 
         <Button
             android:id="@+id/add_location_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:background="@color/colorBackground"
-            android:padding="@dimen/_12sdp"
-            android:text="@string/add_new_location"
-            android:textColor="@color/colorWhite" />
+            style="@style/ButtonConfigurationStyle"
+            android:text="@string/add_new_location" />
 
         <Button
             android:id="@+id/gps_location_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:background="@color/colorBackground"
-            android:padding="@dimen/_12sdp"
-            android:text="@string/gps_location"
-            android:textColor="@color/colorWhite" />
+            style="@style/ButtonConfigurationStyle"
+            android:text="@string/gps_location" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -98,16 +88,9 @@
 
         </LinearLayout>
 
-
         <Button
             android:id="@+id/saveConfig"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:background="@color/colorBackground"
-            android:padding="@dimen/_12sdp"
-            android:text="@string/save_button"
-            android:textColor="@color/colorWhite" />
+            style="@style/ButtonConfigurationStyle"
+            android:text="@string/save_button" />
     </LinearLayout>
-
 </FrameLayout>

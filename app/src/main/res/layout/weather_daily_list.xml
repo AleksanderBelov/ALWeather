@@ -9,30 +9,14 @@
     android:paddingTop="@dimen/_1sdp"
     android:orientation="vertical">
     <TextView
-        android:id="@+id/day_of_week"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/day_of_week"
-        android:textColor="@color/colorWhite"/>
+        style="@style/WeatherDailyStyle"
+        android:id="@+id/day_of_week" />
     <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:textSize="@dimen/_8sdp"
-        android:text="@string/current_temperature"
-        android:textColor="@color/colorWhite"/>
+        style="@style/WeatherDailyStyle"
+        android:id="@+id/time"/>
     <TextView
-        android:id="@+id/weather_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:textSize="@dimen/_11sdp"
-        android:text="@string/current_temperature"
-        android:textColor="@color/colorWhite"/>
+        style="@style/WeatherDailyStyle"
+        android:id="@+id/weather_result"/>
     <ImageView
         android:id="@+id/weather_icon"
         android:layout_width="wrap_content"

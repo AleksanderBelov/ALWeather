@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:padding="2dp">
 
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
-        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="85dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="1dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="1dp"
-        android:layout_marginBottom="1dp"
         card_view:cardCornerRadius="5dp"
-        card_view:contentPadding="2dp"
-        card_view:cardElevation="5dp">
+        card_view:cardElevation="5dp"
+        card_view:contentPadding="2dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -25,84 +25,67 @@
 
             <ImageView
                 android:id="@+id/weatherIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/sun"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+                android:src="@drawable/sun" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/day"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="@color/colorWhite"
-                android:textAlignment="center"
-                android:layout_gravity="left"/>
-            <TextView
-                android:id="@+id/dayTemp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="@color/colorWhite"
-                android:textAlignment="center"
-                android:layout_gravity="right"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/weatherInfo"
-                android:layout_width="match_parent"
-                android:textColor="@color/colorWhite"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textAlignment="center" />
-                <TextView
-                    android:id="@+id/pressureInfo"
-                    android:layout_width="match_parent"
-                    android:textColor="@color/colorWhite"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textAlignment="center" />
-                <TextView
-                    android:id="@+id/humidityInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
-                    android:text=""
-                    android:textAlignment="center" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/day"
+                        style="@style/ForecastListStyle"
+                        android:layout_gravity="left" />
 
-                <TextView
-                    android:id="@+id/wind_deg"
-                    android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/dayTemp"
+                        style="@style/ForecastListStyle"
+                        android:layout_gravity="right"
+                        android:text="TextView"
+                        android:textAlignment="center" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
-                    android:text="TextView"
-                    android:textAlignment="center" />
-                <TextView
-                    android:id="@+id/wind_speed"
-                    android:layout_width="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/weatherInfo"
+                        style="@style/ForecastListStyle" />
+
+                    <TextView
+                        android:id="@+id/pressureInfo"
+                        style="@style/ForecastListStyle" />
+
+                    <TextView
+                        android:id="@+id/humidityInfo"
+                        style="@style/ForecastListStyle" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
-                    android:text="TextView"
-                    android:textAlignment="center" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/wind_deg"
+                        style="@style/ForecastListStyle" />
+
+                    <TextView
+                        android:id="@+id/wind_speed"
+                        style="@style/ForecastListStyle"
+                        android:textAlignment="center" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
         </LinearLayout>
 
