@@ -1,32 +1,24 @@
 package com.alwh.alweather.adapters;
 
 import android.content.Context;
-import android.location.LocationManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
-
-import com.alwh.alweather.json.CityList;
 import com.alwh.alweather.json.CityList;
 import com.alwh.alweather.R;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class CityListAdapter extends ArrayAdapter<CityList> {
 
-    private final String MY_DEBUG_TAG = "ListJsonObjectAdapter";
     private List<CityList> items;
     private List<CityList> itemsAll;
     private List<CityList> suggestions;
     private int viewResourceId;
-
-
-
 
     public CityListAdapter(Context context, int viewResourceId, List<CityList> items) {
         super(context, viewResourceId, items);
@@ -34,12 +26,10 @@ public class CityListAdapter extends ArrayAdapter<CityList> {
         this.itemsAll = new ArrayList<>(this.items);
         this.suggestions = new ArrayList<>();
         this.viewResourceId = viewResourceId;
-
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
-
         if (v == null) {
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = vi.inflate(viewResourceId, null);
@@ -110,8 +100,4 @@ public class CityListAdapter extends ArrayAdapter<CityList> {
         }
     };
 }
-
-/**
- * Created by abelov on 29.05.2017.
- */
 

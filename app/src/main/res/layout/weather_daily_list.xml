@@ -39,6 +39,4 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/app_name"
         android:layout_gravity="center_horizontal"/>
-
-
 </LinearLayout>

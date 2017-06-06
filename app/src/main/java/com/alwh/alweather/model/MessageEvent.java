@@ -3,10 +3,6 @@ package com.alwh.alweather.model;
 import com.alwh.alweather.database.SQLiteForecastData;
 import com.alwh.alweather.database.SQLiteWeatherData;
 
-/**
- * Created by abelov on 22.05.2017.
- */
-
 public class MessageEvent {
     public SQLiteWeatherData sqLiteWeatherData;
     public SQLiteForecastData sqLiteForecastData;
@@ -16,6 +12,7 @@ public class MessageEvent {
         this.sqLiteWeatherData = sqLiteWeatherData;
         this.sqLiteForecastData = sqLiteForecastData;
     }
+
     public MessageEvent(SQLiteWeatherData sqLiteWeatherData) {
         this.sqLiteWeatherData = sqLiteWeatherData;
         this.type = 1;

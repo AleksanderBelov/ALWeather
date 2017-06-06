@@ -1,13 +1,6 @@
 package com.alwh.alweather.helpers;
 
-/**
- * Created by abelov on 11.05.2017.
- */
-
 import android.content.Context;
-import android.media.Image;
-
-import com.alwh.alweather.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -48,27 +41,30 @@ public class ConvertData {
     }
 
 
-    public static int getIconWeatherL(String wIcon, Context context){
+    public static int getIconWeatherL(String wIcon, Context context) {
         String uri = "@drawable/l" + wIcon;
         int icon = context.getResources().getIdentifier(uri, null, context.getPackageName());
 
         return icon;
     }
-    public static int getWeatherInfo(String wInfo, Context context){
+
+    public static int getWeatherInfo(String wInfo, Context context) {
         String uri = "@string/w" + wInfo;
         int info = context.getResources().getIdentifier(uri, null, context.getPackageName());
 
         return info;
     }
-    public static String getTextWeather(int weatherID, Context context){
-        String s =  context.getResources()
+
+    public static String getTextWeather(int weatherID, Context context) {
+        String s = context.getResources()
                 .getString(context
                         .getResources()
                         .getIdentifier("w" + weatherID, "string", context.getPackageName()));
         return s;
     }
-    public static String getTextWeather(String key, Context context){
-        String s =  context.getResources()
+
+    public static String getTextWeather(String key, Context context) {
+        String s = context.getResources()
                 .getString(context
                         .getResources()
                         .getIdentifier(key, "string", context.getPackageName()));

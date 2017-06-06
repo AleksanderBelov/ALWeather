@@ -1,15 +1,11 @@
 package com.alwh.alweather.database;
 
 import com.alwh.alweather.json.forecast.JSONForecastData;
-
 import org.parceler.Parcel;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by abelov on 10.05.2017.
- */
+
 @Parcel
 public class SQLiteForecastData {
     List<SQLiteForecastItem> forecast;
@@ -25,7 +21,6 @@ public class SQLiteForecastData {
 
         this.forecast = new ArrayList<>();
         SQLiteForecastItem sqLiteForecastItem = new SQLiteForecastItem();
-
         for (int i = 0; i < jsonForecastData.getList().size(); i++) {
             sqLiteForecastItem.setCityName(jsonForecastData.getCity().getName());
             sqLiteForecastItem.setCountry(jsonForecastData.getCity().getCountry());
@@ -39,15 +34,12 @@ public class SQLiteForecastData {
             sqLiteForecastItem.setPressure(jsonForecastData.getList().get(i).getMain().getPressure());
             sqLiteForecastItem.setHumidity(jsonForecastData.getList().get(i).getMain().getHumidity());
             sqLiteForecastItem.setWindSpeed(jsonForecastData.getList().get(i).getWind().getSpeed());
-
             if (!(jsonForecastData.getList().get(i).getWind().getDeg() == null)) {
                 sqLiteForecastItem.setWindDeg(jsonForecastData.getList().get(i).getWind().getDeg());
             } else {
                 sqLiteForecastItem.setWindDeg(0);
             }
-
             sqLiteForecastItem.setClouds(jsonForecastData.getList().get(i).getClouds().getAll());
-
             if (!(jsonForecastData.getList().get(i).getRain() == null)) {
                 if (!(jsonForecastData.getList().get(i).getRain().get3h() == null)) {
                     sqLiteForecastItem.setRain(jsonForecastData.getList().get(i).getRain().get3h());
@@ -55,7 +47,6 @@ public class SQLiteForecastData {
             } else {
                 sqLiteForecastItem.setRain(0);
             }
-
             if (!(jsonForecastData.getList().get(i).getSnow() == null)) {
                 if (!(jsonForecastData.getList().get(i).getSnow().get3h() == null)) {
                     sqLiteForecastItem.setSnow(jsonForecastData.getList().get(i).getSnow().get3h());
@@ -68,7 +59,6 @@ public class SQLiteForecastData {
             sqLiteForecastItem.save();
             forecast.add(sqLiteForecastItem);
         }
-        //   SQLiteForecastItem.saveInTx(forecast);
     }
 
     public void save() {

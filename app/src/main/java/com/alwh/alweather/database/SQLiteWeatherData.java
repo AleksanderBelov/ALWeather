@@ -1,22 +1,14 @@
 package com.alwh.alweather.database;
 
-import android.os.Parcelable;
-
 import com.alwh.alweather.json.weather.JSONWeatherData;
 import com.orm.SugarRecord;
 
 import org.parceler.Parcel;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 
-import static java.lang.Math.round;
-
-/**
- * Created by abelov on 08.05.2017.
- */
 @Parcel
 public class SQLiteWeatherData extends SugarRecord {
 
@@ -40,9 +32,6 @@ public class SQLiteWeatherData extends SugarRecord {
     private Date sunrise;
     private Date sunset;
 
-    //String result = new java.text.SimpleDateFormat("HH:mm").format(new Date(unixTime * 1000));
-
-
     public SQLiteWeatherData() {
     }
 
@@ -59,7 +48,7 @@ public class SQLiteWeatherData extends SugarRecord {
         setPressure(jsonWeatherData.getMain().getPressure());
         setHumidity(jsonWeatherData.getMain().getHumidity());
         setWindSpeed(jsonWeatherData.getWind().getSpeed());
-        setId((long)1);
+        setId((long) 1);
 
 
         if (!(jsonWeatherData.getWind().getDeg() == null)) {
@@ -81,7 +70,6 @@ public class SQLiteWeatherData extends SugarRecord {
         } else {
             setSnow(0);
         }
-  //      setDt(jsonWeatherData.getDt());
         setDt(new Date());
         setSunrise(jsonWeatherData.getSys().getSunrise());
         setSunset(jsonWeatherData.getSys().getSunset());
@@ -94,6 +82,7 @@ public class SQLiteWeatherData extends SugarRecord {
     public void setCityName(String cityName) {
         this.cityName = cityName;
     }
+
     public String getCountry() {
         return country;
     }
@@ -148,7 +137,6 @@ public class SQLiteWeatherData extends SugarRecord {
         decimal = decimal.setScale(0, RoundingMode.HALF_UP);
         double result = decimal.doubleValue();
         return result;
-
     }
 
     public void setTemperature(double temperature) {
@@ -219,6 +207,7 @@ public class SQLiteWeatherData extends SugarRecord {
 
         this.dt = unixDateToDate(dtUnix);
     }
+
     public void setDt(Date date) {
 
         this.dt = date;
@@ -242,8 +231,8 @@ public class SQLiteWeatherData extends SugarRecord {
         this.sunset = unixDateToDate(sunsetUnix);
     }
 
-    private Date unixDateToDate(int unixDate){
-       return new Date(unixDate * 1000L);
+    private Date unixDateToDate(int unixDate) {
+        return new Date(unixDate * 1000L);
     }
 
     @Override

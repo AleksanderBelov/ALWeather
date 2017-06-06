@@ -2,16 +2,12 @@ package com.alwh.alweather.database;
 
 import com.orm.SugarRecord;
 
-/**
- * Created by abelov on 10.05.2017.
- */
-
-public class SQLiteAlWeatherConfig extends SugarRecord{
-    String city;
-    double latitude;
-    double longitude;
-    int intervalWeather;
-    int intervalForecast;
+public class SQLiteAlWeatherConfig extends SugarRecord {
+    private String city;
+    private double latitude;
+    private double longitude;
+    private int intervalWeather;
+    private int intervalForecast;
 
     public SQLiteAlWeatherConfig() {
     }
@@ -22,7 +18,6 @@ public class SQLiteAlWeatherConfig extends SugarRecord{
     }
 
     public SQLiteAlWeatherConfig(String city) {
-
         this.city = city;
     }
 

@@ -9,12 +9,6 @@ public class SwipeDetector {
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
-    public SwipeDetector(int distance, int velocity) {
-        super();
-        this.swipe_distance = distance;
-        this.swipe_velocity = velocity;
-    }
-
     public SwipeDetector() {
         super();
         this.swipe_distance = SWIPE_MIN_DISTANCE;

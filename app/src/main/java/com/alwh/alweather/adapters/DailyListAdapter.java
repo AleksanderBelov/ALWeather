@@ -44,20 +44,14 @@ public class DailyListAdapter extends RecyclerView.Adapter<DailyListAdapter.View
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+3"));
         Log.d("AlWeather/DLAd", position + "");
         holder.dayOfWeek.setText(sdf.format(sqLiteForecastData.getForecast().get(position).getDt()));
-
-
         sdf = new SimpleDateFormat("HH:");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+3"));
         String tt = sdf.format(sqLiteForecastData.getForecast().get(position).getDt()) + "00";
         holder.time.setText(tt);
-
-  //      int a = holder.weatherIcon.getWidth();
-
         Picasso.with(context)
                 .load(ConvertData.getIconWeatherL(sqLiteForecastData.getForecast().get(position).getWeatherIcon(),context))
                 .resize(0, weather/PART_DAY)
                 .into(holder.weatherIcon);
-
         holder.weatherResult.setText(String.valueOf(Math.round(sqLiteForecastData.getForecast().get(position).getTemperature())) + "°");
     }
 
@@ -67,23 +61,18 @@ public class DailyListAdapter extends RecyclerView.Adapter<DailyListAdapter.View
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-
-        TextView dayOfWeek;
-        ImageView weatherIcon;
-        TextView weatherResult;
-        TextView time;
+        private TextView dayOfWeek;
+        private ImageView weatherIcon;
+        private TextView weatherResult;
+        private TextView time;
 
         public ViewHolder(View itemView) {
             super(itemView);
             dayOfWeek = (TextView) itemView.findViewById(R.id.day_of_week);
             dayOfWeek.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/corkiRegular.ttf"));
-
             weatherIcon = (ImageView) itemView.findViewById(R.id.weather_icon);
-
-
             weatherResult = (TextView) itemView.findViewById(R.id.weather_result);
             weatherResult.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/corkiRegular.ttf"));
-
             time = (TextView) itemView.findViewById(R.id.time);
             time.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/corkiRegular.ttf"));
         }

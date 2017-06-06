@@ -16,7 +16,6 @@ import com.squareup.picasso.Picasso;
 
 import static com.alwh.alweather.helpers.ConvertData.getTextWeather;
 
-
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHolder> {
 
     private SQLiteForecastData sqLiteForecastData;
@@ -31,7 +30,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.forecast_list, parent, false);
-
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -40,40 +38,35 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
         holder.cardView.setCardBackgroundColor(128);
-
         Picasso.with(context)
- //               .load("http://openweathermap.org/img/w/" + sqLiteForecastData.getForecast().get(position).getWeatherIcon() + ".png")
-                .load(ConvertData.getIconWeatherL(sqLiteForecastData.getForecast().get(position).getWeatherIcon(),context))
+                .load(ConvertData.getIconWeatherL(sqLiteForecastData.getForecast().get(position).getWeatherIcon(), context))
                 .resize(0, 150)
                 .into(holder.weatherIcon);
-
         holder.day.setText(ConvertData.getStandartDate(sqLiteForecastData.getForecast().get(position).getDt()));
         holder.dayTemp.setText("    temp: " + String.valueOf(Math.round(sqLiteForecastData.getForecast().get(position).getTemperature())) + "°");
-        holder.weatherInfo.setText(getTextWeather(sqLiteForecastData.getForecast().get(position).getWeatherID(),context));
+        holder.weatherInfo.setText(getTextWeather(sqLiteForecastData.getForecast().get(position).getWeatherID(), context));
         holder.pressureInfo.setText("    pressure: " + sqLiteForecastData.getForecast().get(position).getPressure() + " hPa");
-        holder.windDegInfo.setText("wind (deg): " + (int)sqLiteForecastData.getForecast().get(position).getWindDeg());
+        holder.windDegInfo.setText("wind (deg): " + (int) sqLiteForecastData.getForecast().get(position).getWindDeg());
         holder.windSpeedInfo.setText("    wind (speed): " + sqLiteForecastData.getForecast().get(position).getWindSpeed() + " km/s");
-        //       holder.humidityInfo.setText("h: " + String.valueOf(Math.round(sqLiteForecastData.getForecast().get(position).getTemperature())) + "%");
     }
 
     @Override
     public int getItemCount() {
         if (sqLiteForecastData == null) return 0;
         return sqLiteForecastData.getForecast().size();
-
     }
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView weatherIcon;
-        TextView day;
-        TextView weatherInfo;
-        TextView pressureInfo;
-        TextView humidityInfo;
-        TextView dayTemp;
-        TextView windDegInfo;
-        TextView windSpeedInfo;
-        CardView cardView;
+        private ImageView weatherIcon;
+        private TextView day;
+        private TextView weatherInfo;
+        private TextView pressureInfo;
+        private TextView humidityInfo;
+        private TextView dayTemp;
+        private TextView windDegInfo;
+        private TextView windSpeedInfo;
+        private CardView cardView;
 
 
         public ViewHolder(View v) {
@@ -87,8 +80,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
             humidityInfo = (TextView) v.findViewById(R.id.humidityInfo);
             windDegInfo = (TextView) v.findViewById(R.id.wind_deg);
             windSpeedInfo = (TextView) v.findViewById(R.id.wind_speed);
-
-
         }
     }
 }

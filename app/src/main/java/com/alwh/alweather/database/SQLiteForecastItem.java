@@ -1,17 +1,13 @@
 package com.alwh.alweather.database;
 
-import com.alwh.alweather.json.weather.JSONWeatherData;
 import com.orm.SugarRecord;
 
 import org.parceler.Parcel;
 
 import java.util.Date;
 
-/**
- * Created by abelov on 10.05.2017.
- */
 @Parcel
-public class SQLiteForecastItem  extends SugarRecord {
+public class SQLiteForecastItem extends SugarRecord {
 
     private String cityName;
     private String country;
@@ -42,6 +38,7 @@ public class SQLiteForecastItem  extends SugarRecord {
     public void setCityName(String cityName) {
         this.cityName = cityName;
     }
+
     public String getCountry() {
         return country;
     }
@@ -49,7 +46,6 @@ public class SQLiteForecastItem  extends SugarRecord {
     public void setCountry(String country) {
         this.country = country;
     }
-
 
 
     public double getCoordLon() {
@@ -159,10 +155,12 @@ public class SQLiteForecastItem  extends SugarRecord {
     public Date getDt() {
         return dt;
     }
+
     public void setDt(int dtUnix) {
 
         this.dt = unixDateToDate(dtUnix);
     }
+
     public void setDt(Date date) {
 
         this.dt = date;
@@ -176,8 +174,7 @@ public class SQLiteForecastItem  extends SugarRecord {
         this.weatherID = weatherID;
     }
 
-    private Date unixDateToDate(int unixDate){
+    private Date unixDateToDate(int unixDate) {
         return new Date(unixDate * 1000L);
     }
-
 }

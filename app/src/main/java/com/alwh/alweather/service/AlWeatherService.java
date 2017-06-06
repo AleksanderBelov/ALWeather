@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+
 import com.alwh.alweather.database.SQLiteAlWeatherConfig;
 import com.alwh.alweather.database.SQLiteForecastData;
 import com.alwh.alweather.database.SQLiteForecastItem;
@@ -25,16 +26,13 @@ import static com.alwh.alweather.helpers.AppRoot.WEATHER;
 
 public class AlWeatherService extends Service {
 
-    final String TAG = "AlWeather/Service ";
-    MyBinder binder = new MyBinder();
-
-    Timer timerWeather;
-    Timer timerForecast;
-    TimerTask tTaskWeather;
-    TimerTask tTaskForecast;
-    SQLiteAlWeatherConfig sqLiteAlWeatherConfig;
-    LoadAllDataFromSite loadAllDataFromSite = new LoadAllDataFromSite();
-
+    private MyBinder binder = new MyBinder();
+    private Timer timerWeather;
+    private Timer timerForecast;
+    private TimerTask tTaskWeather;
+    private TimerTask tTaskForecast;
+    private SQLiteAlWeatherConfig sqLiteAlWeatherConfig;
+    private LoadAllDataFromSite loadAllDataFromSite = new LoadAllDataFromSite();
 
     public AlWeatherService() {
     }
@@ -42,7 +40,6 @@ public class AlWeatherService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(TAG, "onCreate");
         this.sqLiteAlWeatherConfig = SQLiteAlWeatherConfig.findById(SQLiteAlWeatherConfig.class, 1);
         timerWeather = new Timer();
         timerForecast = new Timer();
@@ -52,13 +49,10 @@ public class AlWeatherService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(TAG, "onBind");
         return binder;
-        //      return new Binder();
     }
 
     public boolean onUnbind(Intent intent) {
-        Log.d(TAG, "onUnbind");
         return super.onUnbind(intent);
     }
 
@@ -70,13 +64,9 @@ public class AlWeatherService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand");
-
         if (!(intent.getExtras() == null)) {
-            Log.d(TAG, "get: " + intent.getIntExtra(QUESTION_TO_SERVECE, 0));
             SelectetTransfer(intent.getIntExtra(QUESTION_TO_SERVECE, 0));
         }
-
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -87,7 +77,6 @@ public class AlWeatherService extends Service {
                 if (!(sqLiteAlWeatherConfig.getIntervalWeather() == 0)) {
                     tTaskWeather = new TimerTask() {
                         public void run() {
-                            Log.d(TAG, "LoadWeatherFromSite");
                             loadAllDataFromSite.getWeatherFromSite(sqLiteAlWeatherConfig.getCity());
                         }
                     };
@@ -104,7 +93,6 @@ public class AlWeatherService extends Service {
                 if (!(sqLiteAlWeatherConfig.getIntervalForecast() == 0)) {
                     tTaskForecast = new TimerTask() {
                         public void run() {
-                            Log.d(TAG, "LoadForecastFromSite");
                             loadAllDataFromSite.getForecastFromSite(sqLiteAlWeatherConfig.getCity());
                         }
                     };
@@ -116,12 +104,10 @@ public class AlWeatherService extends Service {
 
     public void TransferWeather(boolean renew) {
         SQLiteWeatherData sqLiteWeatherData;
-
         if (renew) {
             sqLiteWeatherData = loadAllDataFromSite.getWeatherFromSite(sqLiteAlWeatherConfig.getCity());
         } else
             sqLiteWeatherData = SQLiteWeatherData.findById(SQLiteWeatherData.class, SQLiteWeatherData.count(SQLiteWeatherData.class));
-
         Intent intent = new Intent(NEW_WEATHER);
         intent.putExtra("key", TRANSFER_NEW_WEATHER);
         intent.putExtra(WEATHER, Parcels.wrap(sqLiteWeatherData));
@@ -129,12 +115,9 @@ public class AlWeatherService extends Service {
     }
 
     public void TransferForecast(boolean renew) {
-SQLiteForecastData SQLiteForecastData;
-
-  //      loadAllDataFromSite.getForecastFromSite(sqLiteAlWeatherConfig.getCity());
-
+        SQLiteForecastData SQLiteForecastData;
         if (renew) {
-            SQLiteForecastData =  loadAllDataFromSite.getForecastFromSite(sqLiteAlWeatherConfig.getCity());
+            SQLiteForecastData = loadAllDataFromSite.getForecastFromSite(sqLiteAlWeatherConfig.getCity());
         } else {
             SQLiteForecastData = new SQLiteForecastData(SQLiteForecastItem.listAll(SQLiteForecastItem.class));
         }
@@ -142,7 +125,6 @@ SQLiteForecastData SQLiteForecastData;
         intent.putExtra("key", TRANSFER_NEW_FORECAST);
         intent.putExtra(FORECAST, Parcels.wrap(SQLiteForecastData));
         sendBroadcast(intent);
-
     }
 
 
@@ -169,7 +151,6 @@ SQLiteForecastData SQLiteForecastData;
             case CHANGE_CITY:
                 ReloadConfig();
                 break;
-
         }
     }
 }
