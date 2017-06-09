@@ -14,6 +14,7 @@ import com.alwh.alweather.database.SQLiteForecastData;
 import com.alwh.alweather.helpers.ConvertData;
 import com.squareup.picasso.Picasso;
 
+import static com.alwh.alweather.helpers.ConvertData.getDeg;
 import static com.alwh.alweather.helpers.ConvertData.getTextWeather;
 
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHolder> {
@@ -42,12 +43,18 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
                 .load(ConvertData.getIconWeatherL(sqLiteForecastData.getForecast().get(position).getWeatherIcon(), context))
                 .resize(0, 150)
                 .into(holder.weatherIcon);
-        holder.day.setText(ConvertData.getStandartDate(sqLiteForecastData.getForecast().get(position).getDt()));
-        holder.dayTemp.setText("    temp: " + String.valueOf(Math.round(sqLiteForecastData.getForecast().get(position).getTemperature())) + "°");
-        holder.weatherInfo.setText(getTextWeather(sqLiteForecastData.getForecast().get(position).getWeatherID(), context));
-        holder.pressureInfo.setText("    pressure: " + sqLiteForecastData.getForecast().get(position).getPressure() + " hPa");
-        holder.windDegInfo.setText("wind (deg): " + (int) sqLiteForecastData.getForecast().get(position).getWindDeg() + "°");
-        holder.windSpeedInfo.setText("    wind (speed): " + sqLiteForecastData.getForecast().get(position).getWindSpeed() + " km/s");
+        holder.day.setText(ConvertData.getStandartDate(sqLiteForecastData.getForecast().get(position).getDt()) + "  ");
+        holder.dayTemp.setText(context.getString(R.string.temp) + " " + String.valueOf(Math.round(sqLiteForecastData.getForecast().get(position).getTemperature())) + "°");
+        holder.weatherInfo.setText(getTextWeather(sqLiteForecastData.getForecast().get(position).getWeatherID(), context) + ", ");
+        holder.humidityInfo.setText(context.getString(R.string.humidity) + sqLiteForecastData.getForecast().get(position).getHumidity() + "%");
+        holder.pressureInfo.setText(context.getString(R.string.atmospheric_pressure) + " " +
+                ConvertData.getPressure(sqLiteForecastData.getForecast().get(position).getPressure(), context.getString(R.string.atmospheric_pressure_unit)) + " " +
+                context.getString(R.string.atmospheric_pressure_unit));
+        holder.windDegInfo.setText(context.getString(R.string.wind) + " " +
+                getDeg(sqLiteForecastData.getForecast().get(position).getWindDeg(), context) + ", ");
+        holder.windSpeedInfo.setText(context.getString(R.string.wind_speed_begin) + " " +
+                sqLiteForecastData.getForecast().get(position).getWindSpeed() + " " +
+                context.getString(R.string.wind_speed_end));
     }
 
     @Override

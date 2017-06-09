@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:foo="http://schemas.android.com/apk/com.alwh.alweather.helpers"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,13 +14,13 @@
         android:layout_weight="8"
         android:orientation="vertical">
 
-        <TextView
+        <com.alwh.alweather.UI.FontTextView
             android:id="@+id/cityName"
             style="@style/WeatherTextStyle"
             android:layout_marginTop="@dimen/_16sdp"
             android:textSize="@dimen/_24sdp" />
 
-        <TextView
+        <com.alwh.alweather.UI.FontTextView
             android:id="@+id/currentDate"
             style="@style/WeatherTextStyle"
             android:layout_marginTop="@dimen/_8sdp" />
@@ -41,7 +42,7 @@
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/l10d" />
 
-            <TextView
+            <com.alwh.alweather.UI.FontTextView
                 android:id="@+id/temperatureMain"
                 style="@style/WeatherTextStyle"
                 android:layout_marginTop="@dimen/_12sdp"
@@ -55,36 +56,36 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="8"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:weightSum="1">
 
-            <TextView
+            <com.alwh.alweather.UI.FontTextView
                 android:id="@+id/weatherInformation"
-                style="@style/WeatherTextStyle" />
+                style="@style/WeatherTextStyle"/>
 
-            <TextView
+            <com.alwh.alweather.UI.FontTextView
                 android:id="@+id/atmosphericPressure"
-                style="@style/WeatherTextStyle" />
+                style="@style/WeatherTextStyle"/>
 
-            <TextView
+            <com.alwh.alweather.UI.FontTextView
                 android:id="@+id/wind_deg"
                 style="@style/WeatherTextStyle" />
 
-            <TextView
+            <com.alwh.alweather.UI.FontTextView
                 android:id="@+id/windSpeed"
                 style="@style/WeatherTextStyle" />
 
-            <TextView
+            <com.alwh.alweather.UI.FontTextView
                 android:id="@+id/humidity"
                 style="@style/WeatherTextStyle" />
 
-            <TextView
+            <com.alwh.alweather.UI.FontTextView
                 android:id="@+id/sunrise"
                 style="@style/WeatherTextStyle" />
 
-            <TextView
+            <com.alwh.alweather.UI.FontTextView
                 android:id="@+id/sunset"
                 style="@style/WeatherTextStyle" />
-
         </LinearLayout>
     </LinearLayout>
 

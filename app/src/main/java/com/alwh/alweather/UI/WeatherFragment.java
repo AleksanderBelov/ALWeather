@@ -5,11 +5,13 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.alwh.alweather.R;
 import com.alwh.alweather.adapters.DailyListAdapter;
 import com.alwh.alweather.database.SQLiteForecastData;
@@ -18,7 +20,9 @@ import com.alwh.alweather.helpers.ConvertData;
 import com.alwh.alweather.model.MessageEvent;
 import com.alwh.alweather.service.AlWeatherService;
 import com.squareup.picasso.Picasso;
+
 import android.app.Fragment;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -26,6 +30,7 @@ import static com.alwh.alweather.helpers.AppRoot.PART_DAY;
 import static com.alwh.alweather.helpers.AppRoot.QUESTION_TO_SERVECE;
 import static com.alwh.alweather.helpers.AppRoot.TRANSFER_SAVE_FORECAST;
 import static com.alwh.alweather.helpers.AppRoot.TRANSFER_SAVE_WEATHER;
+import static com.alwh.alweather.helpers.ConvertData.getDeg;
 import static com.alwh.alweather.helpers.ConvertData.getTextWeather;
 
 public class WeatherFragment extends Fragment {
@@ -52,6 +57,7 @@ public class WeatherFragment extends Fragment {
 
     public WeatherFragment() {
     }
+
     public static WeatherFragment newInstance(String param1, String param2) {
         WeatherFragment fragment = new WeatherFragment();
         Bundle args = new Bundle();
@@ -88,25 +94,20 @@ public class WeatherFragment extends Fragment {
 
     private void initView() {
         cityName = (TextView) weatherFragmentView.findViewById(R.id.cityName);
-        cityName.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
+        //    cityName.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
         currentDate = (TextView) weatherFragmentView.findViewById(R.id.currentDate);
-        currentDate.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/corkiRegular.ttf"));
+        //    currentDate.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/corkiRegular.ttf"));
         temperatureMain = (TextView) weatherFragmentView.findViewById(R.id.temperatureMain);
-        temperatureMain.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
+        //    temperatureMain.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
         weatherInformation = (TextView) weatherFragmentView.findViewById(R.id.weatherInformation);
-        weatherInformation.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
+        //  weatherInformation.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
         atmosphericPressure = (TextView) weatherFragmentView.findViewById(R.id.atmosphericPressure);
-        atmosphericPressure.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
+        //  atmosphericPressure.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
         windDeg = (TextView) weatherFragmentView.findViewById(R.id.wind_deg);
-        windDeg.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
         windSpeed = (TextView) weatherFragmentView.findViewById(R.id.windSpeed);
-        windSpeed.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
         humidity = (TextView) weatherFragmentView.findViewById(R.id.humidity);
-        humidity.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
         sunrise = (TextView) weatherFragmentView.findViewById(R.id.sunrise);
-        sunrise.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/corkiRegular.ttf"));
         sunset = (TextView) weatherFragmentView.findViewById(R.id.sunset);
-        sunset.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/corkiRegular.ttf"));
         weatherIconMain = (ImageView) weatherFragmentView.findViewById(R.id.weatherIconMain);
         recyclerView = (RecyclerView) weatherFragmentView.findViewById(R.id.weather_daily_list);
         recyclerView.setLayoutManager(new GridLayoutManager(weatherFragmentView.getContext(), PART_DAY));
@@ -115,16 +116,23 @@ public class WeatherFragment extends Fragment {
 
     private void initData(SQLiteWeatherData sqLiteWeatherData) {
 
-        temperatureMain.setText("" + (int)sqLiteWeatherData.getTemperature() + (char)176 + "C");
+        temperatureMain.setText("" + (int) sqLiteWeatherData.getTemperature() + (char) 176 + "C");
         cityName.setText(sqLiteWeatherData.getCityName() + ", " + sqLiteWeatherData.getCountry());
-        currentDate.setText("last change: " + ConvertData.passedMin(sqLiteWeatherData.getDt()) + " min age");
+        currentDate.setText(getString(R.string.last_time_begin) + " "
+                + ConvertData.passedMin(sqLiteWeatherData.getDt()) + " "
+                + getString(R.string.last_time_end));
         Picasso.with(getActivity())
-                .load(ConvertData.getIconWeatherL(sqLiteWeatherData.getWeatherIcon(),getActivity()))
+                .load(ConvertData.getIconWeatherL(sqLiteWeatherData.getWeatherIcon(), getActivity()))
                 .into(weatherIconMain);
-        weatherInformation.setText(getTextWeather(sqLiteWeatherData.getWeatherID(),getActivity()));
-        atmosphericPressure.setText(getString(R.string.atmospheric_pressure) + " " + sqLiteWeatherData.getPressure());
-        windDeg.setText(getString(R.string.wind) + " " + sqLiteWeatherData.getWindDeg() + "°");
-        windSpeed.setText(getString(R.string.wind_speed) + " " + sqLiteWeatherData.getWindSpeed() + "km/h");
+        weatherInformation.setText(getTextWeather(sqLiteWeatherData.getWeatherID(), getActivity()));
+        atmosphericPressure.setText(getString(R.string.atmospheric_pressure) + " " +
+                ConvertData.getPressure(sqLiteWeatherData.getPressure(), getString(R.string.atmospheric_pressure_unit)) + " " +
+                getString(R.string.atmospheric_pressure_unit));
+        windDeg.setText(getString(R.string.wind) + " "
+                + getDeg(sqLiteWeatherData.getWindDeg(), getActivity()));
+        windSpeed.setText(getString(R.string.wind_speed_begin) + " "
+                + sqLiteWeatherData.getWindSpeed() + " "
+                + getString(R.string.wind_speed_end));
         humidity.setText(getString(R.string.humidity) + " " + sqLiteWeatherData.getHumidity() + "%");
         sunrise.setText(getString(R.string.sunrise) + " " + ConvertData.getTime(sqLiteWeatherData.getSunrise()));
         sunset.setText(getString(R.string.sunset) + " " + ConvertData.getTime(sqLiteWeatherData.getSunset()));
@@ -142,7 +150,7 @@ public class WeatherFragment extends Fragment {
     }
 
     @Subscribe
-    public void onEvent(MessageEvent event){
+    public void onEvent(MessageEvent event) {
 
         if (event.type == 1) {
             initData(event.sqLiteWeatherData);

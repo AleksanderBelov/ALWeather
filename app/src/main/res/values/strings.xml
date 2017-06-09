@@ -1,20 +1,27 @@
 <resources>
+
     <string name="app_name">AlWeather</string>
+    <string name="font">corki.ttf</string>
+    <string name="last_time_begin">last time:</string>
+    <string name="last_time_end">min age</string>
+    <string name="temp">temp:</string>
     <string name="wind">wind: </string>
-    <string name="wind_speed">wind speed: </string>
-    <string name="humidity">humidity</string>
+    <string name="nord">N</string>
+    <string name="south">S</string>
+    <string name="east">E</string>
+    <string name="west">W</string>
+    <string name="wind_speed_begin">wind speed: </string>
+    <string name="wind_speed_end">m/s</string>
+    <string name="humidity">humidity: </string>
     <string name="atmospheric_pressure">atmospheric pressure: </string>
+    <string name="atmospheric_pressure_unit">hPa</string>
     <string name="sunrise">sunrise: </string>
     <string name="sunset">sunset </string>
-    <string name="day_of_week">Mon</string>
     <string name="location_hints">Type city name</string>
     <string name="location_example">Example Malmo, Sweden</string>
     <string name="add_new_location">Add new location</string>
     <string name="gps_location">use GPS</string>
-    <string name="stored_location">You can only store 5 locations</string>
     <string name="save_button">SAVE</string>
-    <string name="permission_notice">This permission is important but you can as well set your location on Location page</string>
-    <string name="go_to_location">Go to location setting</string>
     <string name="digit_font">fonts/dsdigib.ttf</string>
     <string name="corki_font">fonts/corkiRegular.ttf</string>
     <string name="w200">thunderstorm with light rain</string>
